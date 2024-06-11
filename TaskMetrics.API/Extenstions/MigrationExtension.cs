@@ -3,7 +3,7 @@ using task_api.TaskMetrics.Infrastructure;
 
 namespace task_api.TaskMetrics.API.Extenstions;
 
-public static class MigrateExtension
+public static class MigrationExtension
 {
     public static void ApplyMigrations(this IApplicationBuilder app)
     {
