@@ -14,26 +14,3 @@ public class Program
                 webBuilder.UseStartup<Startup>();
             });
 }
-
-/*var builder = WebApplication.CreateBuilder(args);
-
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Task API V1");
-        c.RoutePrefix = string.Empty;
-    });
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-app.UseAuthentication();
-
-app.MapControllers();
-
-app.Run();*/
