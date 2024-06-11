@@ -1,5 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 using task_api.TaskMetrics.API.Extenstions;
+using task_api.TaskMetrics.API.Handlers;
 
 namespace task_api.TaskMetrics.API;
 
@@ -19,9 +20,13 @@ public class Startup
             .AddDatabase(Configuration)
             .AddUnitOfWork()
             .AddRepositories()
-            .AddBusinessServices();
-
-        services.AddControllers();
+            .AddBusinessServices()
+            .AddApiAuthentication(Configuration)
+            .AddPasswordHasher()
+            .AddGlobalExceptionFilter()
+            .AddJwtGenerating(Configuration);
+        
+        
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -33,6 +38,7 @@ public class Startup
     {
         if (env.IsDevelopment())
         {
+            /*app.ApplyMigrations();*/
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c =>

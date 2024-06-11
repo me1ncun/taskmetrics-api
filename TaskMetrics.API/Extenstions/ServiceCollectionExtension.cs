@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using task_api.Domain;
+using task_api.TaskMetrics.API.Handlers;
+using task_api.TaskMetrics.API.Helpers;
+using task_api.TaskMetrics.API.Helpers.Jwt;
 using task_api.TaskMetrics.API.Services.User;
 using task_api.TaskMetrics.Domain.Interfaces;
 using task_api.TaskMetrics.Infrastructure;
@@ -29,10 +32,28 @@ public static class ServiceCollectionExtension
             options.UseNpgsql(configuration.GetConnectionString("Database")));
     }
 
-    public static IServiceCollection AddBusinessServices(this IServiceCollection services
-    )
+    public static IServiceCollection AddBusinessServices(this IServiceCollection services)
     {
         return services
             .AddScoped<UserService>();
+    }
+
+    public static IServiceCollection AddPasswordHasher(this IServiceCollection services)
+    {
+        return services
+            .AddScoped<HashPasswordHelper>();
+    }
+    
+    public static IServiceCollection AddGlobalExceptionFilter(this IServiceCollection services)
+    {
+        return services
+            .AddScoped<GlobalExceptionFilter>();
+    }
+    
+    public static IServiceCollection AddJwtGenerating(this IServiceCollection services, IConfiguration configuration)
+    {
+        return services
+            .Configure<JwtOptions>(configuration.GetSection("JwtOptions"))
+            .AddScoped<JwtProvider>();
     }
 }
