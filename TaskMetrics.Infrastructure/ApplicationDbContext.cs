@@ -5,16 +5,16 @@ namespace task_api.TaskMetrics.Infrastructure;
 
 public class ApplicationDbContext: DbContext
 {
-    private IConfiguration Configuration;
+    private IConfiguration _configuration;
 
     public ApplicationDbContext(IConfiguration configuration)
     {
-        Configuration = configuration;
+        _configuration = configuration;
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(Configuration.GetConnectionString("Database"));
+        optionsBuilder.UseNpgsql(_configuration.GetConnectionString("Database"));
     }
 
     public DbSet<User> Users { get; set; }
