@@ -1,13 +1,22 @@
-var builder = WebApplication.CreateBuilder(args);
+using task_api.TaskMetrics.API;
 
-// Add services to the container.
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
 
-builder.Services.AddControllers();
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
+}
 
-// Add swagger 
-builder.Services.AddSwaggerGen();
+/*var builder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -27,4 +36,4 @@ app.UseAuthentication();
 
 app.MapControllers();
 
-app.Run();
+app.Run();*/
