@@ -17,12 +17,14 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : BaseEntity
     public async Task<T> AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
+        
         return entity;
     }
 
     public Task<bool> DeleteAsync(T entity)
     {
         _dbSet.Remove(entity);
+        
         return Task.FromResult(true);
     }
 
@@ -39,6 +41,7 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : BaseEntity
     public Task<T> UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
+        
         return Task.FromResult(entity);
     }
 }
