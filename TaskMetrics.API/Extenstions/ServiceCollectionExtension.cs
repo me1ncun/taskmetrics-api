@@ -12,13 +12,6 @@ namespace task_api.TaskMetrics.API.Extenstions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddRepositories(this IServiceCollection services)
-    {
-        return services
-            .AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>))
-            .AddScoped<IUserRepository, UserRepository>();
-    }
-
     public static IServiceCollection AddUnitOfWork(this IServiceCollection services)
     {
         return services
@@ -32,11 +25,11 @@ public static class ServiceCollectionExtension
             options.UseNpgsql(configuration.GetConnectionString("Database")));
     }
 
-    public static IServiceCollection AddBusinessServices(this IServiceCollection services)
+    /*public static IServiceCollection AddBusinessServices(this IServiceCollection services)
     {
         return services
             .AddScoped<UserService>();
-    }
+    }*/
 
     public static IServiceCollection AddPasswordHasher(this IServiceCollection services)
     {
@@ -56,4 +49,5 @@ public static class ServiceCollectionExtension
             .Configure<JwtOptions>(configuration.GetSection("JwtOptions"))
             .AddScoped<JwtProvider>();
     }
+    
 }
