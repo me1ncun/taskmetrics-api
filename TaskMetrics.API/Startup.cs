@@ -1,6 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using task_api.TaskMetrics.API.Extenstions;
 using task_api.TaskMetrics.API.Handlers;
+using task_api.TaskMetrics.Infrastructure;
 
 namespace task_api.TaskMetrics.API;
 
@@ -19,13 +20,13 @@ public class Startup
         services
             .AddDatabase(Configuration)
             .AddUnitOfWork()
-            .AddRepositories()
-            .AddBusinessServices()
+            /*.AddBusinessServices()*/
             .AddApiAuthentication(Configuration)
             .AddPasswordHasher()
             .AddGlobalExceptionFilter()
-            .AddJwtGenerating(Configuration);
-        
+            .AddControllers()
+            /*.AddJwtGenerating(Configuration)*/;
+        ;
         
         services.AddSwaggerGen(c =>
         {
@@ -40,8 +41,8 @@ public class Startup
         {
             /*app.ApplyMigrations();*/
             app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseSwagger()
+                .UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Task API V1");
                 c.RoutePrefix = string.Empty;
