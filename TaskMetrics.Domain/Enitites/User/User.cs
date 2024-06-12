@@ -1,8 +1,8 @@
-﻿using task_api.TaskMetrics.Domain.Base;
+﻿
 
 namespace task_api.Domain;
 
-public class User: BaseEntity<int>
+public class User
 {
     public User(string name, string email, string password)
     {
