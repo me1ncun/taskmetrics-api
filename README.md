@@ -8,6 +8,11 @@
     - TaskRecord: запись о выполненной задаче.
       - Поля: пользователь(ForeignKey), задача(ForeignKey на User), задача(ForeignKey на TaskItem), дата выполнения, затраченное время в минутах.
 2. API эндпоинты:
+   - CRUD для User:
+     - Создание: POST /api/user/
+     - Просмотр всех пользователей: GET /api/user/
+     - Удаление: DELETE /api/user/{id}/
+   
     - CRUD для TaskItem:
       - Создание: POST /api/task/
       - Просмотр списка: GET /api/task/
