@@ -2,7 +2,8 @@
 
 namespace task_api.Domain;
 
-public interface IUserRepository: IAsyncRepository<User>
+public interface IUserRepisitory : IGenericRepository<User>
 {
-    
+    Task<IEnumerable<User>> GetAllUsersAsync();
+    Task<User?> GetUserByIdAsync(int userID);
 }
