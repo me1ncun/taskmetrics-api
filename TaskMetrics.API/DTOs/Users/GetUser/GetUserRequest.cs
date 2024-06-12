@@ -2,5 +2,5 @@
 
 public class GetUserRequest
 {
-    public string Search { get; set; }
+    public int Id { get; set; }
 }
