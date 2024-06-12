@@ -1,4 +1,4 @@
-﻿namespace task_api.TaskMetrics.API.DTOs.Users;
+﻿namespace task_api.TaskMetrics.API.DTOs.Users.DeleteUser;
 
 public class DeleteUserRequest
 {
