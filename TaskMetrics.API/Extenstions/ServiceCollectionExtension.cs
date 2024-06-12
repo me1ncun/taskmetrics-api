@@ -3,7 +3,6 @@ using task_api.Domain;
 using task_api.TaskMetrics.API.Handlers;
 using task_api.TaskMetrics.API.Helpers;
 using task_api.TaskMetrics.API.Helpers.Jwt;
-using task_api.TaskMetrics.API.Services.User;
 using task_api.TaskMetrics.Domain.Interfaces;
 using task_api.TaskMetrics.Infrastructure;
 using task_api.TaskMetrics.Infrastructure.Repositories;
@@ -24,12 +23,7 @@ public static class ServiceCollectionExtension
         return services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("Database")));
     }
-
-    /*public static IServiceCollection AddBusinessServices(this IServiceCollection services)
-    {
-        return services
-            .AddScoped<UserService>();
-    }*/
+    
 
     public static IServiceCollection AddPasswordHasher(this IServiceCollection services)
     {
