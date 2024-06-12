@@ -1,25 +1,54 @@
-﻿using task_api.TaskMetrics.Domain.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using task_api.Domain;
 using task_api.TaskMetrics.Domain.Interfaces;
 using task_api.TaskMetrics.Infrastructure.Repositories;
 
 namespace task_api.TaskMetrics.Infrastructure;
 
-public class UnitOfWork: IUnitOfWork
+public class UnitOfWork : IUnitOfWork, IDisposable
 {
-    private readonly ApplicationDbContext _dbContext;
+    public ApplicationDbContext Context;
+    private IDbContextTransaction? _objTran = null;
+    public UserRepisotory Users { get; private set; }
 
-    public UnitOfWork(ApplicationDbContext dbContext)
+    public UnitOfWork(ApplicationDbContext _Context)
     {
-        _dbContext = dbContext;
+        Context = _Context;
+        Users = new UserRepisotory(Context);
     }
 
-    public IAsyncRepository<T> AsyncRepository<T>() where T : BaseEntity
+    public void CreateTransaction()
     {
-        return new RepositoryBase<T>(_dbContext);
+        _objTran = Context.Database.BeginTransaction();
     }
 
-    public Task<int> SaveChangesAsync()
+    public void Commit()
     {
-        return _dbContext.SaveChangesAsync();
+        _objTran?.Commit();
+    }
+
+    public void Rollback()
+    {
+        _objTran?.Rollback();
+
+        _objTran?.Dispose();
+    }
+
+    public async Task Save()
+    {
+        try
+        {
+            await Context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public void Dispose()
+    {
+        Context.Dispose();
     }
 }

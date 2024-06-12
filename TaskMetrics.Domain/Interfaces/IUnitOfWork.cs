@@ -1,9 +1,12 @@
-﻿using task_api.TaskMetrics.Domain.Base;
+﻿using task_api.Domain;
 
 namespace task_api.TaskMetrics.Domain.Interfaces;
 
 public interface IUnitOfWork
 {
-    Task<int> SaveChangesAsync();
-    IAsyncRepository<T> AsyncRepository<T>() where T : BaseEntity;
+    UserRepisotory Users { get; }
+    void CreateTransaction();
+    void Commit();
+    void Rollback();
+    Task Save();
 }
