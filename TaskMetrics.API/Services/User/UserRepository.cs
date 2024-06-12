@@ -26,5 +26,11 @@ public class UserRepisotory : GenericRepository<User>, IUserRepisitory
         return user;
     }
 
-    
+    public async Task<User?> GetUserByEmailAsync(string email)
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(c => c.Email == email);
+        
+        return user;
+    }
 }

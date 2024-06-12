@@ -6,4 +6,5 @@ public interface IUserRepisitory : IGenericRepository<User>
 {
     Task<IEnumerable<User>> GetAllUsersAsync();
     Task<User?> GetUserByIdAsync(int userID);
+    Task<User?> GetUserByEmailAsync(string email);
 }
