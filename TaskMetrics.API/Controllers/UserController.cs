@@ -6,6 +6,7 @@ using task_api.TaskMetrics.API.DTOs.Users.AddUser;
 using task_api.TaskMetrics.API.DTOs.Users.DeleteUser;
 using task_api.TaskMetrics.API.DTOs.Users.GetUserList;
 using task_api.TaskMetrics.API.DTOs.Users.UpdateUser;
+using task_api.TaskMetrics.API.Services;
 using task_api.TaskMetrics.Domain.Interfaces;
 
 namespace task_api.Controllers
@@ -14,41 +15,30 @@ namespace task_api.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserService _userService;
+        private readonly ILogger<UserController> _logger;
         
-        public UserController(IUnitOfWork unitOfWork)
+        public UserController(UserService userService,
+            ILogger<UserController> logger)
         {
-            _unitOfWork = unitOfWork;
+            _userService = userService;
+            _logger = logger;
         }
         
         [HttpPost("/api/user/")]
-        public async Task<IActionResult> AddUser(AddUserRequest request)
+        public async Task<IActionResult> Add([FromBody] AddUserRequest request)
         {
-            var userExist = await _unitOfWork.Users.GetUserByEmailAsync(request.Email);
-            if (userExist != null)
-            {
-                return BadRequest("User already exists");
-            }
+            var users = await _userService.AddAsync(request);
             
-            var user = new User(
-                request.Name,
-                request.Email,
-                request.Password);
-            
-            await _unitOfWork.Users.InsertAsync(user);
-            await _unitOfWork.Save();
-            
-            var response = new AddUserResponse(user.Id, user.Name);
-            
-            return Ok(response);
+            return Ok(users);
         }
         
         [HttpGet("/api/users/")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var users = await _unitOfWork.Users.GetAllUsersAsync();
+            var users = await _userService.GetAllAsync();
 
-            if (users.IsNullOrEmpty())
+            if (users == null)
             {
                 return NotFound();
             }
@@ -56,55 +46,42 @@ namespace task_api.Controllers
             return Ok(users);
         }
         
-        [HttpGet("/api/user/{id}/")]
-        public async Task<IActionResult> Details(int id)
+        [HttpGet("/api/user/")]
+        public async Task<IActionResult> Details([FromQuery] GetUserRequest request)
         {
-            var user = await _unitOfWork.Users.GetUserByIdAsync(id);
+            var user = await _userService.GetAsync(request.Id);
             if (user == null)
             {
                 return NotFound();
             }
             
-            var response = new GetUserResponse(user.Id, user.Name, user.Email);
-            
-            return Ok(response);
+            return Ok(user);
         }
-        
+       
         [HttpDelete("/api/user/delete/")]
-        public async Task<IActionResult> Delete(DeleteUserRequest request)
+        public async Task<IActionResult> Delete([FromBody] DeleteUserRequest request)
         {
-            var user = await _unitOfWork.Users.GetUserByIdAsync(request.Id);
+            var user = await _userService.GetAsync(request.Id);
             if (user == null)
             {
                 return NotFound();
             }
             
-            await _unitOfWork.Users.DeleteAsync(user.Id);
-            await _unitOfWork.Save();
-            
-            var response = new DeleteUserResponse(user.Id, user.Name);
+            var response = await _userService.DeleteAsync(request);
             
             return Ok(response);
         }
         
         [HttpPost("/api/user/update/")]
-        public async Task<IActionResult> Update(UpdateUserRequest request)
+        public async Task<IActionResult> Update([FromBody] UpdateUserRequest request)
         {
-            var user = await _unitOfWork.Users.GetUserByEmailAsync(request.Email);
+            var user = await _userService.GetAsync(request.Email);
             if (user == null)
             {
                 return NotFound();
             }
-
-            user = new User(
-                request.Name,
-                request.Email,
-                request.Password);
             
-            await _unitOfWork.Users.UpdateAsync(user);
-            await _unitOfWork.Save();
-            
-            var response = new UpdateUserResponse(user.Id, user.Name);
+            var response = await  _userService.UpdateAsync(request);
             
             return Ok(response);
         }
