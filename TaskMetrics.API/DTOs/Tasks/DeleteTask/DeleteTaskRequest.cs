@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace task_api.TaskMetrics.API.DTOs.Users.DeleteUser;
+namespace task_api.TaskMetrics.API.DTOs.TaskItems.DeleteTaskItem;
 
-public class DeleteUserRequest
+public class DeleteTaskRequest
 {
     [Required]
     public int Id { get; set; }
