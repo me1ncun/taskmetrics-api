@@ -8,6 +8,11 @@ public class GetUserResponse
         Name = name;
         Email = email;
     }
+
+    public GetUserResponse()
+    {
+        
+    }
     
     public int Id { get; set; }
     public string Name { get; set; }
