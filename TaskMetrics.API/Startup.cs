@@ -20,10 +20,10 @@ public class Startup
         services
             .AddDatabase(Configuration)
             .AddUnitOfWork()
-            /*.AddBusinessServices()*/
             .AddApiAuthentication(Configuration)
             .AddPasswordHasher()
             .AddGlobalExceptionFilter()
+            .AddServices()
             .AddControllers()
             /*.AddJwtGenerating(Configuration)*/;
         ;

@@ -3,6 +3,7 @@ using task_api.Domain;
 using task_api.TaskMetrics.API.Handlers;
 using task_api.TaskMetrics.API.Helpers;
 using task_api.TaskMetrics.API.Helpers.Jwt;
+using task_api.TaskMetrics.API.Services;
 using task_api.TaskMetrics.Domain.Interfaces;
 using task_api.TaskMetrics.Infrastructure;
 using task_api.TaskMetrics.Infrastructure.Repositories;
@@ -15,6 +16,11 @@ public static class ServiceCollectionExtension
     {
         return services
             .AddScoped<IUnitOfWork, UnitOfWork>();
+    }
+    
+    public static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        return services.AddScoped<UserService>();
     }
 
     public static IServiceCollection AddDatabase(this IServiceCollection services
