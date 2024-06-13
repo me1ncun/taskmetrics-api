@@ -22,7 +22,7 @@ namespace task_api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("task_api.Domain.TaskItem", b =>
+            modelBuilder.Entity("task_api.Domain.Task", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,17 +37,13 @@ namespace task_api.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Titile")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskItems");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("task_api.Domain.TaskRecord", b =>
@@ -61,6 +57,9 @@ namespace task_api.Migrations
                     b.Property<DateTime>("DateCompleted")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("TaskId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("TaskItemId")
                         .HasColumnType("integer");
 
@@ -72,7 +71,7 @@ namespace task_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskItemId");
+                    b.HasIndex("TaskId");
 
                     b.HasIndex("UserId");
 
@@ -106,9 +105,9 @@ namespace task_api.Migrations
 
             modelBuilder.Entity("task_api.Domain.TaskRecord", b =>
                 {
-                    b.HasOne("task_api.Domain.TaskItem", "TaskItem")
+                    b.HasOne("task_api.Domain.Task", "Task")
                         .WithMany()
-                        .HasForeignKey("TaskItemId")
+                        .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -118,7 +117,7 @@ namespace task_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TaskItem");
+                    b.Navigation("Task");
 
                     b.Navigation("User");
                 });
