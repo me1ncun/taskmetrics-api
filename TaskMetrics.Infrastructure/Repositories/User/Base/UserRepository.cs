@@ -4,10 +4,10 @@ using task_api.TaskMetrics.Infrastructure.Repositories;
 
 namespace task_api.Domain;
 
-public class UserRepisotory : GenericRepository<User>, IUserRepisitory
+public class UserRepository : GenericRepository<User>, IUserRepository
 {
     private readonly ApplicationDbContext _context;
-    public UserRepisotory(ApplicationDbContext context): base(context)
+    public UserRepository(ApplicationDbContext context): base(context)
     {
         _context = context;
     }
