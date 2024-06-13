@@ -13,7 +13,7 @@ namespace task_api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "TaskItems",
+                name: "Tasks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -24,7 +24,7 @@ namespace task_api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaskItems", x => x.Id);
+                    table.PrimaryKey("PK_Tasks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,15 +51,16 @@ namespace task_api.Migrations
                     DateCompleted = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TimeSpent = table.Column<int>(type: "integer", nullable: false),
                     TaskItemId = table.Column<int>(type: "integer", nullable: false),
+                    TaskId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TaskRecords", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TaskRecords_TaskItems_TaskItemId",
-                        column: x => x.TaskItemId,
-                        principalTable: "TaskItems",
+                        name: "FK_TaskRecords_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -71,9 +72,9 @@ namespace task_api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaskRecords_TaskItemId",
+                name: "IX_TaskRecords_TaskId",
                 table: "TaskRecords",
-                column: "TaskItemId");
+                column: "TaskId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskRecords_UserId",
@@ -88,7 +89,7 @@ namespace task_api.Migrations
                 name: "TaskRecords");
 
             migrationBuilder.DropTable(
-                name: "TaskItems");
+                name: "Tasks");
 
             migrationBuilder.DropTable(
                 name: "Users");
