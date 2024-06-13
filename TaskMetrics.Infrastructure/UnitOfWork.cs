@@ -10,12 +10,12 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 {
     public ApplicationDbContext Context;
     private IDbContextTransaction? _objTran = null;
-    public UserRepository Users { get; private set; }
+    public UserRepository UserRepository { get; private set; }
 
     public UnitOfWork(ApplicationDbContext _Context)
     {
         Context = _Context;
-        Users = new UserRepository(Context);
+        UserRepository = new UserRepository(Context);
     }
 
     public void CreateTransaction()

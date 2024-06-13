@@ -4,7 +4,7 @@ namespace task_api.TaskMetrics.Domain.Interfaces;
 
 public interface IUnitOfWork
 {
-    UserRepository Users { get; }
+    UserRepository UserRepository { get; }
     void CreateTransaction();
     void Commit();
     void Rollback();

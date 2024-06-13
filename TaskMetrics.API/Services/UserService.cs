@@ -18,7 +18,7 @@ public class UserService : BaseService
 
     public async Task<AddUserResponse> AddAsync(AddUserRequest request)
     {
-        var repository = UnitOfWork.Users;
+        var repository = UnitOfWork.UserRepository;
 
         var userExist = await repository.GetUserByEmailAsync(request.Email);
         if (userExist != null)
@@ -39,7 +39,7 @@ public class UserService : BaseService
 
     public async Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request)
     {
-        var repository = UnitOfWork.Users;
+        var repository = UnitOfWork.UserRepository;
 
         var user = await repository.GetUserByEmailAsync(request.Email);
         if (user == null)
@@ -59,7 +59,7 @@ public class UserService : BaseService
 
     public async Task<DeleteUserResponse> DeleteAsync(DeleteUserRequest request)
     {
-        var repository = UnitOfWork.Users;
+        var repository = UnitOfWork.UserRepository;
 
         var user = await repository.GetUserByIdAsync(request.Id);
         if (user == null)
@@ -75,7 +75,7 @@ public class UserService : BaseService
 
     public async Task<GetUserResponse> GetAsync(int id)
     {
-        var repository = UnitOfWork.Users;
+        var repository = UnitOfWork.UserRepository;
 
         var user = await repository.GetUserByIdAsync(id);
         if (user == null)
@@ -88,7 +88,7 @@ public class UserService : BaseService
     
     public async Task<GetUserResponse> GetAsync(string email)
     {
-        var repository = UnitOfWork.Users;
+        var repository = UnitOfWork.UserRepository;
 
         var user = await repository.GetUserByEmailAsync(email);
         if (user == null)
@@ -101,7 +101,7 @@ public class UserService : BaseService
 
     public async Task<List<GetUserResponse>> GetAllAsync()
     {
-        var repository = UnitOfWork.Users;
+        var repository = UnitOfWork.UserRepository;
 
         var users = await repository.GetAllUsersAsync();
         
