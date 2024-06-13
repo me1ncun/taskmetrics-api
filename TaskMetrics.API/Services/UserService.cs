@@ -104,6 +104,7 @@ public class UserService : BaseService
         var repository = UnitOfWork.Users;
 
         var users = await repository.GetAllUsersAsync();
+        
         var userDTOs = users.Select(_ => new GetUserResponse()
             {
                 Id = _.Id,
