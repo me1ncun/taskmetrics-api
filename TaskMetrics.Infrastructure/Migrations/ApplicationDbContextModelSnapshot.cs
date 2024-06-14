@@ -60,9 +60,6 @@ namespace task_api.Migrations
                     b.Property<int>("TaskId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TaskItemId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("TimeSpent")
                         .HasColumnType("integer");
 

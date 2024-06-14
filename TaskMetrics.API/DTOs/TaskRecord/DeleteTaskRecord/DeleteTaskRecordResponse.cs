@@ -4,16 +4,16 @@ namespace task_api.TaskMetrics.API.DTOs.TaskRecord.DeleteTaskRecord;
 
 public class DeleteTaskRecordResponse
 {
-    public DeleteTaskRecordResponse(string userName, string taskName, DateTime dateCompleted, int timeSpent)
+    public DeleteTaskRecordResponse(int userId, int taskId, DateTime dateCompleted, int timeSpent)
     {
-        UserName = userName;
-        TaskName = taskName;
+        UserId = userId;
+        TaskId = taskId;
         DateCompleted = dateCompleted;
         TimeSpent = timeSpent;
     }
     
-    public string UserName { get; set; }
-    public string TaskName { get; set; }
+    public int UserId { get; set; }
+    public int TaskId { get; set; }
     public DateTime DateCompleted { get; set; }
     public int TimeSpent { get; set; }
 }

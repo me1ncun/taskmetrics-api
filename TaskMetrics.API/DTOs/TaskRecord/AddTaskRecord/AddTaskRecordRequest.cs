@@ -6,10 +6,10 @@ public class AddTaskRecordRequest
 {
     [Required]
     [MaxLength(50)]
-    public string UserName { get; set; }
+    public int UserId { get; set; }
     [Required]
     [MaxLength(50)]
-    public string TaskName { get; set; }
+    public int TaskId { get; set; }
     [Required]
     public DateTime DateCompleted { get; set; }
     [Required]

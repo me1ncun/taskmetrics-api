@@ -2,18 +2,17 @@
 
 public class AddTaskRecordResponse
 {
-    public AddTaskRecordResponse(int id, string userName, string taskName, DateTime dateCompleted, int timeSpent)
+    public AddTaskRecordResponse(int userId, int taskId, DateTime dateCompleted, int timeSpent)
     {
-        Id = id;
-        UserName = userName;
-        TaskName = taskName;
+        UserId = userId;
+        TaskId = taskId;
         DateCompleted = dateCompleted;
         TimeSpent = timeSpent;
     }
     
     public int Id { get; set; }
-    public string UserName { get; set; }
-    public string TaskName { get; set; }
+    public int UserId { get; set; }
+    public int TaskId { get; set; }
     public DateTime DateCompleted { get; set; }
     public int TimeSpent { get; set; }
 }
