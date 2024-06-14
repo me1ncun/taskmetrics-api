@@ -56,11 +56,11 @@ public class TaskService : BaseService
         return new UpdateTaskResponse(task.Titile, task.Description, task.DueDate);
     }
 
-    public async Task<DeleteTaskResponse> DeleteAsync(DeleteTaskRequest request)
+    public async Task<DeleteTaskResponse> DeleteAsync(int id)
     {
         var repository = UnitOfWork.TaskRepository;
 
-        var task = await repository.GetTaskByIdAsync(request.Id);
+        var task = await repository.GetTaskByIdAsync(id);
         if (task == null)
         {
             throw new NotFoundException();

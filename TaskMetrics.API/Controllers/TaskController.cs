@@ -42,10 +42,10 @@ public class TaskController : ControllerBase
         return Ok(tasks);
     }
 
-    [HttpGet("/api/task/")]
-    public async Task<IActionResult> Details([FromQuery] GetTaskRequest request)
+    [HttpGet("/api/task/{id}/")]
+    public async Task<IActionResult> Details([FromQuery] int id)
     {
-        var task = await _taskService.GetAsync(request.Id);
+        var task = await _taskService.GetAsync(id);
         if (task == null)
         {
             return NotFound();
@@ -54,21 +54,21 @@ public class TaskController : ControllerBase
         return Ok(task);
     }
 
-    [HttpDelete("/api/task/delete/")]
-    public async Task<IActionResult> Delete([FromBody] DeleteTaskRequest request)
+    [HttpDelete("/api/task/{id}/")]
+    public async Task<IActionResult> Delete([FromQuery] int id)
     {
-        var task = await _taskService.GetAsync(request.Id);
+        var task = await _taskService.GetAsync(id);
         if (task == null)
         {
             return NotFound();
         }
 
-        var response = await _taskService.DeleteAsync(request);
+        var response = await _taskService.DeleteAsync(id);
 
         return Ok(response);
     }
 
-    [HttpPost("/api/task/update/")]
+    [HttpPut("/api/task/update/")]
     public async Task<IActionResult> Update([FromBody] UpdateTaskRequest request)
     {
         var task = await _taskService.GetAsync(request.Title);

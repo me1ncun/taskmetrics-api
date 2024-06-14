@@ -46,10 +46,10 @@ namespace task_api.Controllers
             return Ok(users);
         }
         
-        [HttpGet("/api/user/")]
-        public async Task<IActionResult> Details([FromQuery] GetUserRequest request)
+        [HttpGet("/api/user/{id}")]
+        public async Task<IActionResult> Details([FromQuery] int id)
         {
-            var user = await _userService.GetAsync(request.Id);
+            var user = await _userService.GetAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -58,21 +58,21 @@ namespace task_api.Controllers
             return Ok(user);
         }
        
-        [HttpDelete("/api/user/delete/")]
-        public async Task<IActionResult> Delete([FromBody] DeleteUserRequest request)
+        [HttpDelete("/api/user/{id}/")]
+        public async Task<IActionResult> Delete([FromQuery] int id)
         {
-            var user = await _userService.GetAsync(request.Id);
+            var user = await _userService.GetAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
             
-            var response = await _userService.DeleteAsync(request);
+            var response = await _userService.DeleteAsync(id);
             
             return Ok(response);
         }
         
-        [HttpPost("/api/user/update/")]
+        [HttpPut("/api/user/update/")]
         public async Task<IActionResult> Update([FromBody] UpdateUserRequest request)
         {
             var user = await _userService.GetAsync(request.Email);

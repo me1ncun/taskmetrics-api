@@ -57,11 +57,11 @@ public class UserService : BaseService
         return new UpdateUserResponse(user.Id, user.Name);
     }
 
-    public async Task<DeleteUserResponse> DeleteAsync(DeleteUserRequest request)
+    public async Task<DeleteUserResponse> DeleteAsync(int id)
     {
         var repository = UnitOfWork.UserRepository;
 
-        var user = await repository.GetUserByIdAsync(request.Id);
+        var user = await repository.GetUserByIdAsync(id);
         if (user == null)
         {
             throw new NotFoundException();
