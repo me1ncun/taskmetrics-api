@@ -48,11 +48,10 @@ namespace task_api.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DateCompleted = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TimeSpent = table.Column<int>(type: "integer", nullable: false),
-                    TaskItemId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
                     TaskId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    DateCompleted = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TimeSpent = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

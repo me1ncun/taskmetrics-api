@@ -12,7 +12,7 @@ using task_api.TaskMetrics.Infrastructure;
 namespace task_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240613170632_Initial")]
+    [Migration("20240614135600_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -61,9 +61,6 @@ namespace task_api.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TaskId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TaskItemId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TimeSpent")
