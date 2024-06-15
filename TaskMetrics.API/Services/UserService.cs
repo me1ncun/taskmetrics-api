@@ -4,13 +4,14 @@ using task_api.TaskMetrics.API.DTOs.Users.AddUser;
 using task_api.TaskMetrics.API.DTOs.Users.DeleteUser;
 using task_api.TaskMetrics.API.DTOs.Users.GetUserList;
 using task_api.TaskMetrics.API.DTOs.Users.UpdateUser;
+using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Exceptions;
 using task_api.TaskMetrics.Domain.Interfaces;
 using task_api.TaskMetrics.Infrastructure.Repositories;
 
 namespace task_api.TaskMetrics.API.Services;
 
-public class UserService : BaseService
+public class UserService : BaseService, IUserService
 {
     private readonly IMapper _mapper;
     public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)

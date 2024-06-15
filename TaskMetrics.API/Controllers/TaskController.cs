@@ -4,6 +4,7 @@ using task_api.TaskMetrics.API.DTOs.TaskItems.DeleteTaskItem;
 using task_api.TaskMetrics.API.DTOs.TaskItems.GetTaskItem;
 using task_api.TaskMetrics.API.DTOs.TaskItems.UpdateTaskItem;
 using task_api.TaskMetrics.API.Services;
+using task_api.TaskMetrics.API.Services.Interfaces;
 
 namespace task_api.Controllers;
 
@@ -11,10 +12,10 @@ namespace task_api.Controllers;
 [Route("[controller]")]
 public class TaskController : ControllerBase
 {
-    private readonly TaskService _taskService;
+    private readonly ITaskService _taskService;
     private readonly ILogger<TaskController> _logger;
 
-    public TaskController(TaskService taskService,
+    public TaskController(ITaskService taskService,
         ILogger<TaskController> logger)
     {
         _taskService = taskService;

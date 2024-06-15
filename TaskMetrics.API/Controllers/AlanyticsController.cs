@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using task_api.TaskMetrics.API.Services;
+using task_api.TaskMetrics.API.Services.Interfaces;
 
 namespace task_api.Controllers;
 
@@ -7,10 +8,10 @@ namespace task_api.Controllers;
 [Route("[controller]")]
 public class AlanyticsController: ControllerBase
 {
-    private readonly AnalyticsService _analyticsService;
+    private readonly IAnalyticsService _analyticsService;
     private readonly ILogger<AlanyticsController> _logger;
     
-    public AlanyticsController(AnalyticsService analyticsService,
+    public AlanyticsController(IAnalyticsService analyticsService,
         ILogger<AlanyticsController> logger)
     {
         _analyticsService = analyticsService;

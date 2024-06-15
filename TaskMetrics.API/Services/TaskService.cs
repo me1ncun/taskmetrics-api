@@ -4,13 +4,14 @@ using task_api.TaskMetrics.API.DTOs.TaskItems.AddTaskItem;
 using task_api.TaskMetrics.API.DTOs.TaskItems.DeleteTaskItem;
 using task_api.TaskMetrics.API.DTOs.TaskItems.GetTaskItem;
 using task_api.TaskMetrics.API.DTOs.TaskItems.UpdateTaskItem;
+using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Exceptions;
 using task_api.TaskMetrics.Domain.Interfaces;
 using Task = task_api.Domain.Task;
 
 namespace task_api.TaskMetrics.API.Services;
 
-public class TaskService : BaseService
+public class TaskService : BaseService, ITaskService
 {
     private readonly IMapper _mapper;
     public TaskService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)

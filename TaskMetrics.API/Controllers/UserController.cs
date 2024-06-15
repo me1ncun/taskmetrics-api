@@ -7,6 +7,7 @@ using task_api.TaskMetrics.API.DTOs.Users.DeleteUser;
 using task_api.TaskMetrics.API.DTOs.Users.GetUserList;
 using task_api.TaskMetrics.API.DTOs.Users.UpdateUser;
 using task_api.TaskMetrics.API.Services;
+using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Interfaces;
 
 namespace task_api.Controllers
@@ -15,10 +16,10 @@ namespace task_api.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
         private readonly ILogger<UserController> _logger;
         
-        public UserController(UserService userService,
+        public UserController(IUserService userService,
             ILogger<UserController> logger)
         {
             _userService = userService;

@@ -7,12 +7,13 @@ using task_api.TaskMetrics.API.DTOs.TaskRecord.AddTaskRecord;
 using task_api.TaskMetrics.API.DTOs.TaskRecord.DeleteTaskRecord;
 using task_api.TaskMetrics.API.DTOs.TaskRecord.GetTaskRecord;
 using task_api.TaskMetrics.API.DTOs.TaskRecord.UpdateTaskRecord;
+using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Exceptions;
 using task_api.TaskMetrics.Domain.Interfaces;
 
 namespace task_api.TaskMetrics.API.Services;
 
-public class TaskRecordService : BaseService
+public class TaskRecordService : BaseService, ITaskRecordService
 {
     private readonly IMapper _mapper;
     public TaskRecordService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)

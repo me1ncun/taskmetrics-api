@@ -1,8 +1,9 @@
 ﻿using task_api.Domain;
+using task_api.TaskMetrics.API.Services.Interfaces;
 
 namespace task_api.TaskMetrics.API.Services;
 
-public class AnalyticsService
+public class AnalyticsService: IAnalyticsService
 {
     private readonly TaskRecordService _taskRecordService;
     
