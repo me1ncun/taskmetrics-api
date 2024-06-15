@@ -40,7 +40,7 @@ namespace task_api.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Titile")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
