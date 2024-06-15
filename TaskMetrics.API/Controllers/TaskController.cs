@@ -42,8 +42,8 @@ public class TaskController : ControllerBase
         return Ok(tasks);
     }
 
-    [HttpGet("/api/task/{id}/")]
-    public async Task<IActionResult> Details([FromQuery] int id)
+    [HttpGet("/api/task/{id}")]
+    public async Task<IActionResult> Details([FromRoute] int id)
     {
         var task = await _taskService.GetAsync(id);
         if (task == null)
@@ -54,8 +54,8 @@ public class TaskController : ControllerBase
         return Ok(task);
     }
 
-    [HttpDelete("/api/task/{id}/")]
-    public async Task<IActionResult> Delete([FromQuery] int id)
+    [HttpDelete("/api/task/{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
         var task = await _taskService.GetAsync(id);
         if (task == null)

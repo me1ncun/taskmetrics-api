@@ -43,7 +43,7 @@ public class TaskRecordController: ControllerBase
     }
 
     [HttpGet("/api/task-record/{id}")]
-    public async Task<IActionResult> Details([FromQuery] int id)
+    public async Task<IActionResult> Details([FromRoute] int id)
     {
         var task = await _taskRecordService.GetAsync(id);
         if (task == null)
@@ -54,8 +54,8 @@ public class TaskRecordController: ControllerBase
         return Ok(task);
     }
 
-    [HttpDelete("/api/task-record/{id}/")]
-    public async Task<IActionResult> Delete([FromQuery] int id)
+    [HttpDelete("/api/task-record/{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
         var task = await _taskRecordService.GetAsync(id);
         if (task == null)

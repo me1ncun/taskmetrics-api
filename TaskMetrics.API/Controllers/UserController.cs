@@ -47,7 +47,7 @@ namespace task_api.Controllers
         }
         
         [HttpGet("/api/user/{id}")]
-        public async Task<IActionResult> Details([FromQuery] int id)
+        public async Task<IActionResult> Details([FromRoute] int id)
         {
             var user = await _userService.GetAsync(id);
             if (user == null)
@@ -58,8 +58,8 @@ namespace task_api.Controllers
             return Ok(user);
         }
        
-        [HttpDelete("/api/user/{id}/")]
-        public async Task<IActionResult> Delete([FromQuery] int id)
+        [HttpDelete("/api/user/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var user = await _userService.GetAsync(id);
             if (user == null)
