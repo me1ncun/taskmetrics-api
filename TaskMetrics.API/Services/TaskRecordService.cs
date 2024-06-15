@@ -1,4 +1,5 @@
-﻿using task_api.Domain;
+﻿using AutoMapper;
+using task_api.Domain;
 using task_api.TaskMetrics.API.DTOs.TaskItems.DeleteTaskItem;
 using task_api.TaskMetrics.API.DTOs.TaskItems.GetTaskItem;
 using task_api.TaskMetrics.API.DTOs.TaskItems.UpdateTaskItem;
@@ -13,8 +14,10 @@ namespace task_api.TaskMetrics.API.Services;
 
 public class TaskRecordService : BaseService
 {
-    public TaskRecordService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IMapper _mapper;
+    public TaskRecordService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)
     {
+        _mapper = mapper;
     }
 
     public async Task<AddTaskRecordResponse> AddAsync(AddTaskRecordRequest request)
@@ -27,20 +30,16 @@ public class TaskRecordService : BaseService
             throw new NotFoundException();
         }
 
-        var taskRecord = new TaskRecord(
-            request.TaskId,
-            request.UserId,
-            request.DateCompleted,
-            request.TimeSpent);
+        var taskRecord = _mapper.Map<TaskRecord>(request);
 
         await repository.InsertAsync(taskRecord);
         await UnitOfWork.Save();
 
-        return new AddTaskRecordResponse(taskRecord.UserId, taskRecord.TaskId, taskRecord.DateCompleted,
-            taskRecord.TimeSpent);
-    }
+        var response = _mapper.Map<AddTaskRecordResponse>(taskRecord);
 
-    //
+        return response;
+    }
+    
     public async Task<UpdateTaskRecordResponse> UpdateAsync(UpdateTaskRecordRequest request)
     {
         var repository = UnitOfWork.TaskRecordRepository;
@@ -59,8 +58,9 @@ public class TaskRecordService : BaseService
         await repository.UpdateAsync(taskRecord);
         await UnitOfWork.Save();
 
-        return new UpdateTaskRecordResponse(taskRecord.UserId, taskRecord.TaskId, taskRecord.DateCompleted,
-            taskRecord.TimeSpent);
+        var response = _mapper.Map<UpdateTaskRecordResponse>(taskRecord);
+
+        return response;
     }
 
     public async Task<DeleteTaskRecordResponse> DeleteAsync(int id)
@@ -76,8 +76,9 @@ public class TaskRecordService : BaseService
         await repository.DeleteAsync(taskRecord.Id);
         await UnitOfWork.Save();
 
-        return new DeleteTaskRecordResponse(taskRecord.UserId, taskRecord.TaskId, taskRecord.DateCompleted,
-            taskRecord.TimeSpent);
+        var response = _mapper.Map<DeleteTaskRecordResponse>(taskRecord);
+
+        return response;
     }
 
     public async Task<GetTaskRecordResponse> GetAsync(int id)
@@ -90,8 +91,9 @@ public class TaskRecordService : BaseService
             throw new NotFoundException();
         }
 
-        return new GetTaskRecordResponse(taskRecord.UserId, taskRecord.TaskId, taskRecord.DateCompleted,
-            taskRecord.TimeSpent);
+        var response = _mapper.Map<GetTaskRecordResponse>(taskRecord);
+
+        return response;
     }
     
     public async Task<GetTaskRecordResponse> GetAsync(int userId, int taskId)
@@ -104,8 +106,9 @@ public class TaskRecordService : BaseService
             throw new NotFoundException();
         }
 
-        return new GetTaskRecordResponse(taskRecord.UserId, taskRecord.TaskId, taskRecord.DateCompleted,
-            taskRecord.TimeSpent);
+        var response = _mapper.Map<GetTaskRecordResponse>(taskRecord);
+
+        return response;
     }
 
     public async Task<List<GetTaskRecordResponse>> GetAllAsync()
@@ -114,15 +117,7 @@ public class TaskRecordService : BaseService
 
         var taskRecords = await repository.GetAllTaskRecordsAsync();
 
-        var taskDTOs = taskRecords.Select(_ => new GetTaskRecordResponse()
-            {
-                Id = _.Id,
-                UserId = _.UserId,
-                TaskId = _.TaskId,
-                DateCompleted = _.DateCompleted,
-                TimeSpent = _.TimeSpent,
-            })
-            .ToList();
+        var taskDTOs = _mapper.Map<List<GetTaskRecordResponse>>(taskRecords);
 
         return taskDTOs;
     }

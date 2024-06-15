@@ -1,4 +1,5 @@
-﻿using task_api.Domain;
+﻿using AutoMapper;
+using task_api.Domain;
 using task_api.TaskMetrics.API.DTOs.TaskItems.AddTaskItem;
 using task_api.TaskMetrics.API.DTOs.TaskItems.DeleteTaskItem;
 using task_api.TaskMetrics.API.DTOs.TaskItems.GetTaskItem;
@@ -11,8 +12,10 @@ namespace task_api.TaskMetrics.API.Services;
 
 public class TaskService : BaseService
 {
-    public TaskService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IMapper _mapper;
+    public TaskService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)
     {
+        _mapper = mapper;
     }
     
     public async Task<AddTaskResponse> AddAsync(AddTaskRequest request)
@@ -25,15 +28,14 @@ public class TaskService : BaseService
             throw new NotFoundException();
         }
 
-        var task = new Task(
-            request.Title,
-            request.Description,
-            request.DueDate);
+        var task = _mapper.Map<Task>(request);
 
         await repository.InsertAsync(task);
         await UnitOfWork.Save();
 
-        return new AddTaskResponse(task.Titile, task.Description, task.DueDate);
+        var response = _mapper.Map<AddTaskResponse>(task);
+        
+        return response;
     }
 
     public async Task<UpdateTaskResponse> UpdateAsync(UpdateTaskRequest request)
@@ -46,14 +48,16 @@ public class TaskService : BaseService
             throw new NotFoundException();
         }
 
-        task.Titile = request.Title;
+        task.Title = request.Title;
         task.Description = request.Description;
         task.DueDate = request.DueDate;
 
         await repository.UpdateAsync(task);
         await UnitOfWork.Save();
 
-        return new UpdateTaskResponse(task.Titile, task.Description, task.DueDate);
+        var response = _mapper.Map<UpdateTaskResponse>(task);
+
+        return response;
     }
 
     public async Task<DeleteTaskResponse> DeleteAsync(int id)
@@ -69,7 +73,9 @@ public class TaskService : BaseService
         await repository.DeleteAsync(task.Id);
         await UnitOfWork.Save();
 
-        return new DeleteTaskResponse(task.Titile, task.Description, task.DueDate);
+        var response = _mapper.Map<DeleteTaskResponse>(task);
+        
+        return response;
     }
 
     public async Task<GetTaskResponse> GetAsync(int id)
@@ -82,7 +88,9 @@ public class TaskService : BaseService
             throw new NotFoundException();
         }
 
-        return new GetTaskResponse(task.Id, task.Titile, task.Description, task.DueDate);
+        var response = _mapper.Map<GetTaskResponse>(task);
+
+        return response;
     }
     
     public async Task<GetTaskResponse> GetAsync(string title)
@@ -95,7 +103,9 @@ public class TaskService : BaseService
             throw new NotFoundException();
         }
 
-        return new GetTaskResponse(task.Titile, task.Description, task.DueDate);
+        var response = _mapper.Map<GetTaskResponse>(task);
+        
+        return response;
     }
 
     public async Task<List<GetTaskResponse>> GetAllAsync()
@@ -104,14 +114,7 @@ public class TaskService : BaseService
 
         var tasks = await repository.GetAllTasksAsync();
         
-        var taskDTOs = tasks.Select(_ => new GetTaskResponse()
-            {
-                Id = _.Id,
-                Title = _.Titile,
-                Description = _.Description,
-                DueDate = _.DueDate
-            })
-            .ToList();
+        var taskDTOs = _mapper.Map<List<GetTaskResponse>>(tasks);
 
         return taskDTOs;
     }

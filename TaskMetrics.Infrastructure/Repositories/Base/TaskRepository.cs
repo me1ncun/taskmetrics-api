@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using task_api.Domain;
 using task_api.TaskMetrics.Infrastructure.Repositories.TaskItem.Interface;
+using Task = task_api.Domain.Task;
 
 namespace task_api.TaskMetrics.Infrastructure.Repositories.TaskItem.Base;
 
-public class TaskRepository : GenericRepository<task_api.Domain.Task>, ITaskRepository
+public class TaskRepository : GenericRepository<Task>, ITaskRepository
 {
     private readonly ApplicationDbContext _context;
     
@@ -12,12 +14,12 @@ public class TaskRepository : GenericRepository<task_api.Domain.Task>, ITaskRepo
         _context = context;
     }
     
-    public async Task<IEnumerable<task_api.Domain.Task>> GetAllTasksAsync()
+    public async Task<IEnumerable<Task>> GetAllTasksAsync()
     {
         return await _context.Tasks.ToListAsync();
     }
     
-    public async Task<task_api.Domain.Task?> GetTaskByIdAsync(int taskId)
+    public async Task<Task?> GetTaskByIdAsync(int taskId)
     {
         var taskItem = await _context.Tasks
             .FirstOrDefaultAsync(c => c.Id == taskId);
@@ -25,15 +27,15 @@ public class TaskRepository : GenericRepository<task_api.Domain.Task>, ITaskRepo
         return taskItem;
     }
     
-    public async Task<task_api.Domain.Task?> GetTaskByTitleAsync(string title)
+    public async Task<Task?> GetTaskByTitleAsync(string title)
     {
         var taskItem = await _context.Tasks
-            .FirstOrDefaultAsync(c => c.Titile == title);
+            .FirstOrDefaultAsync(c => c.Title == title);
         
         return taskItem;
     }
     
-    public async Task<task_api.Domain.Task?> GetTaskByDescriptionAsync(string description)
+    public async Task<Task?> GetTaskByDescriptionAsync(string description)
     {
         var taskItem = await _context.Tasks
             .FirstOrDefaultAsync(c => c.Description == description);

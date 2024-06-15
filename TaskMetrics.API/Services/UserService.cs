@@ -1,4 +1,5 @@
-﻿using task_api.Domain;
+﻿using AutoMapper;
+using task_api.Domain;
 using task_api.TaskMetrics.API.DTOs.Users.AddUser;
 using task_api.TaskMetrics.API.DTOs.Users.DeleteUser;
 using task_api.TaskMetrics.API.DTOs.Users.GetUserList;
@@ -11,9 +12,10 @@ namespace task_api.TaskMetrics.API.Services;
 
 public class UserService : BaseService
 {
-    public UserService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IMapper _mapper;
+    public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)
     {
-
+        _mapper = mapper;
     }
 
     public async Task<AddUserResponse> AddAsync(AddUserRequest request)
@@ -26,15 +28,14 @@ public class UserService : BaseService
             throw new NotFoundException();
         }
 
-        var user = new User(
-            request.Name,
-            request.Email,
-            request.Password);
+        var user = _mapper.Map<User>(request);
 
         await repository.InsertAsync(user);
         await UnitOfWork.Save();
+        
+        var response = _mapper.Map<AddUserResponse>(user);
 
-        return new AddUserResponse(user.Name, user.Email);
+        return response;
     }
 
     public async Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request)
@@ -53,8 +54,10 @@ public class UserService : BaseService
 
         await repository.UpdateAsync(user);
         await UnitOfWork.Save();
+        
+        var response = _mapper.Map<UpdateUserResponse>(user);
 
-        return new UpdateUserResponse(user.Id, user.Name);
+        return response;
     }
 
     public async Task<DeleteUserResponse> DeleteAsync(int id)
@@ -70,7 +73,9 @@ public class UserService : BaseService
         await repository.DeleteAsync(user.Id);
         await UnitOfWork.Save();
 
-        return new DeleteUserResponse(user.Id, user.Name);
+        var response = _mapper.Map<DeleteUserResponse>(user);
+        
+        return response;
     }
 
     public async Task<GetUserResponse> GetAsync(int id)
@@ -83,7 +88,9 @@ public class UserService : BaseService
             throw new NotFoundException();
         }
 
-        return new GetUserResponse(user.Id, user.Name, user.Email);
+        var response = _mapper.Map<GetUserResponse>(user);
+
+        return response;
     }
     
     public async Task<GetUserResponse> GetAsync(string email)
@@ -96,7 +103,9 @@ public class UserService : BaseService
             throw new NotFoundException();
         }
 
-        return new GetUserResponse(user.Id, user.Name, user.Email);
+        var response = _mapper.Map<GetUserResponse>(user);
+
+        return response;
     }
 
     public async Task<List<GetUserResponse>> GetAllAsync()
@@ -105,13 +114,7 @@ public class UserService : BaseService
 
         var users = await repository.GetAllUsersAsync();
         
-        var userDTOs = users.Select(_ => new GetUserResponse()
-            {
-                Id = _.Id,
-                Name = _.Name,
-                Email = _.Email
-            })
-            .ToList();
+        var userDTOs = _mapper.Map<List<GetUserResponse>>(users);
 
         return userDTOs;
     }

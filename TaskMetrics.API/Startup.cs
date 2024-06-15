@@ -24,6 +24,7 @@ public class Startup
             .AddPasswordHasher()
             .AddGlobalExceptionFilter()
             .AddServices()
+            .AddAutoMapper()
             .AddControllers()
             /*.AddJwtGenerating(Configuration)*/;
         ;

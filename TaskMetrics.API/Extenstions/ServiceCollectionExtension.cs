@@ -24,6 +24,12 @@ public static class ServiceCollectionExtension
             .AddScoped<TaskService>()
             .AddScoped<TaskRecordService>();
     }
+    
+    public static IServiceCollection AddAutoMapper(this IServiceCollection services)
+    {
+        return services
+            .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    }
 
     public static IServiceCollection AddDatabase(this IServiceCollection services
         , IConfiguration configuration)
