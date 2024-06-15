@@ -22,7 +22,8 @@ public static class ServiceCollectionExtension
     {
         return services.AddScoped<UserService>()
             .AddScoped<TaskService>()
-            .AddScoped<TaskRecordService>();
+            .AddScoped<TaskRecordService>()
+            .AddScoped<AnalyticsService>();
     }
     
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)
