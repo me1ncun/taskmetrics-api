@@ -8,6 +8,7 @@ using task_api.TaskMetrics.API.DTOs.Users.GetUserList;
 using task_api.TaskMetrics.API.DTOs.Users.UpdateUser;
 using task_api.TaskMetrics.API.Services;
 using task_api.TaskMetrics.API.Services.Interfaces;
+using task_api.TaskMetrics.Domain.Exceptions;
 using task_api.TaskMetrics.Domain.Interfaces;
 
 namespace task_api.Controllers
@@ -18,35 +19,50 @@ namespace task_api.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILogger<UserController> _logger;
-        
+
         public UserController(IUserService userService,
             ILogger<UserController> logger)
         {
             _userService = userService;
             _logger = logger;
         }
-        
+
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
         [HttpPost("/api/user/")]
         public async Task<IActionResult> Add([FromBody] AddUserRequest request)
         {
-            var users = await _userService.AddAsync(request);
-            
-            return Ok(users);
+            try
+            {
+                var user = await _userService.AddAsync(request);
+
+                return Ok(user);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DublicateUserException)
+            {
+                return BadRequest("User already exists");
+            }
         }
-        
+
         [HttpGet("/api/users/")]
         public async Task<IActionResult> Get()
         {
             var users = await _userService.GetAllAsync();
-
             if (users == null)
             {
                 return NotFound();
             }
-            
+
             return Ok(users);
         }
-        
+
         [HttpGet("/api/user/{id}")]
         public async Task<IActionResult> Details([FromRoute] int id)
         {
@@ -55,10 +71,10 @@ namespace task_api.Controllers
             {
                 return NotFound();
             }
-            
+
             return Ok(user);
         }
-       
+
         [HttpDelete("/api/user/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -67,12 +83,12 @@ namespace task_api.Controllers
             {
                 return NotFound();
             }
-            
+
             var response = await _userService.DeleteAsync(id);
-            
+
             return Ok(response);
         }
-        
+
         [HttpPut("/api/user/update/")]
         public async Task<IActionResult> Update([FromBody] UpdateUserRequest request)
         {
@@ -81,9 +97,9 @@ namespace task_api.Controllers
             {
                 return NotFound();
             }
-            
-            var response = await  _userService.UpdateAsync(request);
-            
+
+            var response = await _userService.UpdateAsync(request);
+
             return Ok(response);
         }
     }
