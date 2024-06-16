@@ -4,6 +4,7 @@ using task_api.TaskMetrics.API.Handlers;
 using task_api.TaskMetrics.API.Helpers;
 using task_api.TaskMetrics.API.Helpers.Jwt;
 using task_api.TaskMetrics.API.Services;
+using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Interfaces;
 using task_api.TaskMetrics.Infrastructure;
 using task_api.TaskMetrics.Infrastructure.Repositories;
@@ -20,7 +21,7 @@ public static class ServiceCollectionExtension
     
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        return services.AddScoped<UserService>()
+        return services.AddScoped<IUserService, UserService>()
             .AddScoped<TaskService>()
             .AddScoped<TaskRecordService>()
             .AddScoped<AnalyticsService>();
