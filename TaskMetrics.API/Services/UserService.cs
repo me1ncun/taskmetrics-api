@@ -18,7 +18,7 @@ public class UserService : BaseService, IUserService
     {
         _mapper = mapper;
     }
-
+    
     public async Task<AddUserResponse> AddAsync(AddUserRequest request)
     {
         var repository = UnitOfWork.UserRepository;
@@ -26,7 +26,7 @@ public class UserService : BaseService, IUserService
         var userExist = await repository.GetUserByEmailAsync(request.Email);
         if (userExist != null)
         {
-            throw new NotFoundException();
+            throw new DublicateUserException();
         }
 
         var user = _mapper.Map<User>(request);
@@ -114,6 +114,11 @@ public class UserService : BaseService, IUserService
         var repository = UnitOfWork.UserRepository;
 
         var users = await repository.GetAllUsersAsync();
+        
+        if (users == null)
+        {
+            throw new NotFoundException();
+        }
         
         var userDTOs = _mapper.Map<List<GetUserResponse>>(users);
 
