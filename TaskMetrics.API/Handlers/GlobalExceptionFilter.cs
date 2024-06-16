@@ -13,6 +13,8 @@ public class GlobalExceptionFilter : IExceptionFilter
         {
             NotFoundException => StatusCodes.Status404NotFound,
             
+            DublicateUserException => StatusCodes.Status400BadRequest,
+            
             ValidationException => StatusCodes.Status400BadRequest,
 
             UnauthorizedException => StatusCodes.Status401Unauthorized,
