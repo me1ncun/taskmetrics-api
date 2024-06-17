@@ -1,6 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data;
+using Dapper;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using task_api.Domain;
+using task_api.TaskMetrics.Domain;
 using task_api.TaskMetrics.Infrastructure.Repositories.Interface;
+using Task = task_api.Domain.Task;
 
 namespace task_api.TaskMetrics.Infrastructure.Repositories.Base;
 
@@ -23,5 +28,19 @@ public class TaskRecordRepository : GenericRepository<TaskRecord>, ITaskRecordRe
     public async Task<TaskRecord> GetTaskRecordByUserIdAndTaskIdAsync(int userId, int taskId)
     {
         return await _context.TaskRecords.FirstOrDefaultAsync(x => x.UserId == userId && x.TaskId == taskId);
+    }
+
+    public async Task<int> GetTaskPriorityByTaskRecord(string priority)
+    {
+        var connection = _context.Database.GetDbConnection();
+        
+        var sql = @"
+        SELECT Count(*) as PriorityCount
+        FROM ""TaskRecords"" tr
+        JOIN ""Tasks"" t ON tr.""TaskId"" = t.""Id"" AND t.""Priority"" = @priority
+        WHERE t.""Priority""= @priority
+        GROUP BY t.""Priority"";";
+    
+        return await connection.QueryFirstOrDefaultAsync<int>(sql, new {priority});
     }
 }

@@ -19,10 +19,18 @@ public class AnalyticsService: IAnalyticsService
         var totalTime = sortedRecords.Sum(r => r.TimeSpent);
         var totalTasks = sortedRecords.Count();
 
+        var analytics = new Dictionary<string, int>()
+        {
+            {"High", await _taskRecordService.GetTaskPriorityByTaskRecords("high")},
+            {"Medium", await _taskRecordService.GetTaskPriorityByTaskRecords("medium")},
+            {"Low", await _taskRecordService.GetTaskPriorityByTaskRecords("low")},
+        };
+
         return new Analytics
         {
             TotalTasks = totalTasks,
-            TimeSpent = totalTime
+            TimeSpent = totalTime,
+            Priority = analytics
         };
     }
 }

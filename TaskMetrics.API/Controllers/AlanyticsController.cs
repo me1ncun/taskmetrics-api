@@ -25,7 +25,7 @@ public class AlanyticsController: ControllerBase
         
         var analytics = await _analyticsService.GetAsync(actualDate);
         
-        if (analytics == null)
+        if (analytics is null)
         {
             return NotFound();
         }

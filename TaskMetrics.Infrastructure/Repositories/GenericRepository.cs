@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using task_api.TaskMetrics.Domain;
 using task_api.TaskMetrics.Domain.Interfaces;
 
 namespace task_api.TaskMetrics.Infrastructure.Repositories;
@@ -6,7 +7,6 @@ namespace task_api.TaskMetrics.Infrastructure.Repositories;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly ApplicationDbContext _context;
-        
         protected readonly DbSet<T> _dbSet;
         
         public GenericRepository(ApplicationDbContext context)

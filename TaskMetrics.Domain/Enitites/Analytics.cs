@@ -6,10 +6,5 @@ public class Analytics
 {
     public int TotalTasks { get; set; }
     public int TimeSpent { get; set; }
-    public enum Priority
-    {
-        Low,
-        Medium,
-        High
-    }
+    public Dictionary<string, int> Priority { get; set; }
 }

@@ -13,4 +13,5 @@ public interface ITaskRecordService
     Task<GetTaskRecordResponse> GetAsync(int id);
     Task<GetTaskRecordResponse> GetAsync(int userId, int taskId);
     Task<List<GetTaskRecordResponse>> GetAllAsync();
+    Task<int> GetTaskPriorityByTaskRecords(string priority);
 }

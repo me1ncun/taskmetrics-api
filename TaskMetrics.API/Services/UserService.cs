@@ -44,7 +44,7 @@ public class UserService : BaseService, IUserService
         var repository = UnitOfWork.UserRepository;
 
         var user = await repository.GetUserByEmailAsync(request.Email);
-        if (user == null)
+        if (user is null)
         {
             throw new NotFoundException();
         }
@@ -66,7 +66,7 @@ public class UserService : BaseService, IUserService
         var repository = UnitOfWork.UserRepository;
 
         var user = await repository.GetUserByIdAsync(id);
-        if (user == null)
+        if (user is null)
         {
             throw new NotFoundException();
         }
@@ -84,7 +84,7 @@ public class UserService : BaseService, IUserService
         var repository = UnitOfWork.UserRepository;
 
         var user = await repository.GetUserByIdAsync(id);
-        if (user == null)
+        if (user is null)
         {
             throw new NotFoundException();
         }
@@ -99,7 +99,7 @@ public class UserService : BaseService, IUserService
         var repository = UnitOfWork.UserRepository;
 
         var user = await repository.GetUserByEmailAsync(email);
-        if (user == null)
+        if (user is null)
         {
             throw new NotFoundException();
         }
@@ -114,8 +114,7 @@ public class UserService : BaseService, IUserService
         var repository = UnitOfWork.UserRepository;
 
         var users = await repository.GetAllUsersAsync();
-        
-        if (users == null)
+        if (users is null)
         {
             throw new NotFoundException();
         }

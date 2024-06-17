@@ -44,7 +44,7 @@ public class TaskService : BaseService, ITaskService
         var repository = UnitOfWork.TaskRepository;
 
         var task = await repository.GetTaskByTitleAsync(request.Title);
-        if (task == null)
+        if (task is null)
         {
             throw new NotFoundException();
         }
@@ -67,7 +67,7 @@ public class TaskService : BaseService, ITaskService
         var repository = UnitOfWork.TaskRepository;
 
         var task = await repository.GetTaskByIdAsync(id);
-        if (task == null)
+        if (task is null)
         {
             throw new NotFoundException();
         }
@@ -85,7 +85,7 @@ public class TaskService : BaseService, ITaskService
         var repository = UnitOfWork.TaskRepository;
 
         var task = await repository.GetTaskByIdAsync(id);
-        if (task == null)
+        if (task is null)
         {
             throw new NotFoundException();
         }
@@ -100,7 +100,7 @@ public class TaskService : BaseService, ITaskService
         var repository = UnitOfWork.TaskRepository;
 
         var task = await repository.GetTaskByTitleAsync(title);
-        if (task == null)
+        if (task is null)
         {
             throw new NotFoundException();
         }

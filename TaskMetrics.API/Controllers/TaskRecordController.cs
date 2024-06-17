@@ -34,8 +34,7 @@ public class TaskRecordController: ControllerBase
     public async Task<IActionResult> Get()
     {
         var tasks = await _taskRecordService.GetAllAsync();
-
-        if (tasks == null)
+        if (tasks is null)
         {
             return NotFound();
         }
@@ -47,7 +46,7 @@ public class TaskRecordController: ControllerBase
     public async Task<IActionResult> Details([FromRoute] int id)
     {
         var task = await _taskRecordService.GetAsync(id);
-        if (task == null)
+        if (task is null)
         {
             return NotFound();
         }
@@ -59,7 +58,7 @@ public class TaskRecordController: ControllerBase
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         var task = await _taskRecordService.GetAsync(id);
-        if (task == null)
+        if (task is null)
         {
             return NotFound();
         }
@@ -73,7 +72,7 @@ public class TaskRecordController: ControllerBase
     public async Task<IActionResult> Update([FromBody] UpdateTaskRecordRequest request)
     {
         var task = await _taskRecordService.GetAsync(request.UserId, request.TaskId);
-        if (task == null)
+        if (task is null)
         {
             return NotFound();
         }

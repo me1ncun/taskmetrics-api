@@ -7,4 +7,5 @@ public interface ITaskRecordRepository
     Task<IEnumerable<TaskRecord>> GetAllTaskRecordsAsync();
     Task<TaskRecord> GetTaskRecordByIdAsync(int id);
     Task<TaskRecord> GetTaskRecordByUserIdAndTaskIdAsync(int userId, int taskId);
+    Task<int> GetTaskPriorityByTaskRecord(string priority);
 }

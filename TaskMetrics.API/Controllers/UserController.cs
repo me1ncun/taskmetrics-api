@@ -18,15 +18,7 @@ namespace task_api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ILogger<UserController> _logger;
-
-        public UserController(IUserService userService,
-            ILogger<UserController> logger)
-        {
-            _userService = userService;
-            _logger = logger;
-        }
-
+        
         public UserController(IUserService userService)
         {
             _userService = userService;
@@ -55,7 +47,7 @@ namespace task_api.Controllers
         public async Task<IActionResult> Get()
         {
             var users = await _userService.GetAllAsync();
-            if (users == null)
+            if (users is null)
             {
                 return NotFound();
             }
@@ -67,7 +59,7 @@ namespace task_api.Controllers
         public async Task<IActionResult> Details([FromRoute] int id)
         {
             var user = await _userService.GetAsync(id);
-            if (user == null)
+            if (user is null)
             {
                 return NotFound();
             }
@@ -79,7 +71,7 @@ namespace task_api.Controllers
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var user = await _userService.GetAsync(id);
-            if (user == null)
+            if (user is null)
             {
                 return NotFound();
             }
@@ -93,7 +85,7 @@ namespace task_api.Controllers
         public async Task<IActionResult> Update([FromBody] UpdateUserRequest request)
         {
             var user = await _userService.GetAsync(request.Email);
-            if (user == null)
+            if (user is null)
             {
                 return NotFound();
             }

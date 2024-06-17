@@ -69,7 +69,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
         var repository = UnitOfWork.TaskRecordRepository;
 
         var taskRecord = await repository.GetTaskRecordByIdAsync(id);
-        if (taskRecord == null)
+        if (taskRecord is null)
         {
             throw new NotFoundException();
         }
@@ -87,7 +87,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
         var repository = UnitOfWork.TaskRecordRepository;
 
         var taskRecord = await repository.GetTaskRecordByIdAsync(id);
-        if (taskRecord == null)
+        if (taskRecord is null)
         {
             throw new NotFoundException();
         }
@@ -102,7 +102,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
         var repository = UnitOfWork.TaskRecordRepository;
 
         var taskRecord = await repository.GetTaskRecordByUserIdAndTaskIdAsync(userId, taskId);
-        if (taskRecord == null)
+        if (taskRecord is null)
         {
             throw new NotFoundException();
         }
@@ -121,5 +121,10 @@ public class TaskRecordService : BaseService, ITaskRecordService
         var taskDTOs = _mapper.Map<List<GetTaskRecordResponse>>(taskRecords);
 
         return taskDTOs;
+    }
+
+    public async Task<int> GetTaskPriorityByTaskRecords(string priority)
+    {
+        return await UnitOfWork.TaskRecordRepository.GetTaskPriorityByTaskRecord(priority);
     }
 }

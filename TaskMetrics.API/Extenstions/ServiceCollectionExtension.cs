@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using task_api.Domain;
 using task_api.TaskMetrics.API.Handlers;
 using task_api.TaskMetrics.API.Helpers;
