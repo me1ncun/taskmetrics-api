@@ -5,9 +5,9 @@ namespace task_api.TaskMetrics.API.Services;
 
 public class AnalyticsService: IAnalyticsService
 {
-    private readonly TaskRecordService _taskRecordService;
+    private readonly ITaskRecordService _taskRecordService;
     
-    public AnalyticsService(TaskRecordService taskRecordService)
+    public AnalyticsService(ITaskRecordService taskRecordService)
     {
         _taskRecordService = taskRecordService;
     }

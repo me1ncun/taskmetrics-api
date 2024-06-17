@@ -52,6 +52,7 @@ public class TaskService : BaseService, ITaskService
         task.Title = request.Title;
         task.Description = request.Description;
         task.DueDate = request.DueDate;
+        task.Priority = request.Priority;
 
         await repository.UpdateAsync(task);
         await UnitOfWork.Save();

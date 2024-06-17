@@ -42,4 +42,12 @@ public class TaskRepository : GenericRepository<Task>, ITaskRepository
         
         return taskItem;
     }
+    
+    public async Task<Task?> GetTaskByPriorityAsync(string priority)
+    {
+        var taskItem = await _context.Tasks
+            .FirstOrDefaultAsync(c => c.Priority == priority);
+        
+        return taskItem;
+    }
 }
