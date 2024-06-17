@@ -6,13 +6,13 @@ namespace task_api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AlanyticsController: ControllerBase
+public class AnalyticsController: ControllerBase
 {
     private readonly IAnalyticsService _analyticsService;
-    private readonly ILogger<AlanyticsController> _logger;
+    private readonly ILogger<AnalyticsController> _logger;
     
-    public AlanyticsController(IAnalyticsService analyticsService,
-        ILogger<AlanyticsController> logger)
+    public AnalyticsController(IAnalyticsService analyticsService,
+        ILogger<AnalyticsController> logger)
     {
         _analyticsService = analyticsService;
         _logger = logger;
