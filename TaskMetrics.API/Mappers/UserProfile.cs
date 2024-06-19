@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using task_api.Domain;
-using task_api.TaskMetrics.API.DTOs.Users.AddUser;
-using task_api.TaskMetrics.API.DTOs.Users.DeleteUser;
-using task_api.TaskMetrics.API.DTOs.Users.GetUserList;
-using task_api.TaskMetrics.API.DTOs.Users.UpdateUser;
+using task_api.TaskMetrics.API.DTOs.Auth;
+using task_api.TaskMetrics.API.DTOs.Auth.Login;
 
 namespace task_api.TaskMetrics.API.Mappers;
 
@@ -11,10 +9,10 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<AddUserRequest, User>();
-        CreateMap<User, AddUserResponse>();
-        CreateMap<User, UpdateUserResponse>();
-        CreateMap<User, DeleteUserResponse>();
-        CreateMap<User, GetUserResponse>();
+        CreateMap<RegisterUserRequest, User>();
+        CreateMap<LoginUserRequest, User>();
+        CreateMap<User, RegisterUserResponse>();
+        CreateMap<User, LoginUserResponse>();
+        CreateMap<User, LoginUserRequest>();
     }
 }

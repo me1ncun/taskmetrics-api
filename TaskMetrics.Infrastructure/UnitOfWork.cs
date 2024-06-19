@@ -13,14 +13,14 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 {
     public ApplicationDbContext Context;
     private IDbContextTransaction? _objTran = null;
-    public UserRepository UserRepository { get; private set; }
+    public AuthRepository AuthRepository { get; private set; }
     public TaskRepository TaskRepository { get; private set; }
     public TaskRecordRepository TaskRecordRepository { get; private set; }
 
     public UnitOfWork(ApplicationDbContext _Context)
     {
         Context = _Context;
-        UserRepository = new UserRepository(Context);
+        AuthRepository = new AuthRepository(Context);
         TaskRepository = new TaskRepository(Context);
         TaskRecordRepository = new TaskRecordRepository(Context);
     }

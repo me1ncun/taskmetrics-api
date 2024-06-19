@@ -7,7 +7,7 @@ namespace task_api.TaskMetrics.Domain.Interfaces;
 
 public interface IUnitOfWork
 {
-    UserRepository UserRepository { get; }
+    AuthRepository AuthRepository { get; }
     TaskRepository TaskRepository { get; }
     TaskRecordRepository TaskRecordRepository { get; }
     void CreateTransaction();
