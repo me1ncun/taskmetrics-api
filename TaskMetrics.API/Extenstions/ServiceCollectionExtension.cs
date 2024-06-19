@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using task_api.Domain;
 using task_api.TaskMetrics.API.Handlers;
@@ -19,15 +20,15 @@ public static class ServiceCollectionExtension
         return services
             .AddScoped<IUnitOfWork, UnitOfWork>();
     }
-    
+
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        return services.AddScoped<IUserService, UserService>()
+        return services.AddScoped<IAuthService, AuthService>()
             .AddScoped<ITaskService, TaskService>()
             .AddScoped<ITaskRecordService, TaskRecordService>()
             .AddScoped<IAnalyticsService, AnalyticsService>();
     }
-    
+
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
         return services
@@ -40,25 +41,42 @@ public static class ServiceCollectionExtension
         return services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("Database")));
     }
-    
+
 
     public static IServiceCollection AddPasswordHasher(this IServiceCollection services)
     {
         return services
             .AddScoped<HashPasswordHelper>();
     }
-    
+
     public static IServiceCollection AddGlobalExceptionFilter(this IServiceCollection services)
     {
         return services
             .AddScoped<GlobalExceptionFilter>();
     }
-    
-    public static IServiceCollection AddJwtGenerating(this IServiceCollection services, IConfiguration configuration)
+
+    public static IServiceCollection AddJwtGenerating(this IServiceCollection services,
+        IConfiguration configuration)
     {
         return services
             .Configure<JwtOptions>(configuration.GetSection("JwtOptions"))
             .AddScoped<JwtProvider>();
     }
-    
+
+    public static IServiceCollection AddContextAccessor(this IServiceCollection services)
+    {
+        return services.AddSingleton<IHttpContextAccessor,
+            HttpContextAccessor>();
+    }
+
+    public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
+    {
+        return services
+            .AddAuthorization(options =>
+            {
+                options.AddPolicy("TaskRecordOwnerPolicy", policy =>
+                    policy.Requirements.Add(new TaskRecordOwnerRequirement()));
+            })
+            .AddTransient<IAuthorizationHandler, TaskRecordOwnerHandler>();
+    }
 }

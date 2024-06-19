@@ -15,10 +15,12 @@ namespace task_api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IHttpContextAccessor httpContextAccessor)
         {
             _authService = authService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost("/api/user/register")]
@@ -27,6 +29,14 @@ namespace task_api.Controllers
             try
             {
                 var user = await _authService.RegisterAsync(request);
+
+                _httpContextAccessor.HttpContext.Response.Cookies.Append("token", user.Token,  new CookieOptions
+                {
+                    MaxAge = TimeSpan.FromMinutes(60),
+                    HttpOnly = true,
+                    Secure = true, 
+                    SameSite = SameSiteMode.None 
+                });
 
                 return Ok(user);
             }
@@ -46,6 +56,14 @@ namespace task_api.Controllers
             try
             {
                 var user = await _authService.LoginAsync(request);
+                
+                _httpContextAccessor.HttpContext.Response.Cookies.Append("token", user.Token,  new CookieOptions
+                {
+                    MaxAge = TimeSpan.FromMinutes(60),
+                    HttpOnly = true,
+                    Secure = true, 
+                    SameSite = SameSiteMode.None 
+                });
 
                 return Ok(user);
             }

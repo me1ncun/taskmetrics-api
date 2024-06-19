@@ -10,22 +10,23 @@ using task_api.TaskMetrics.API.DTOs.TaskRecord.UpdateTaskRecord;
 using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Exceptions;
 using task_api.TaskMetrics.Domain.Interfaces;
+using task_api.TaskMetrics.Infrastructure.Repositories.Base;
 
 namespace task_api.TaskMetrics.API.Services;
 
 public class TaskRecordService : BaseService, ITaskRecordService
 {
     private readonly IMapper _mapper;
+    private readonly TaskRecordRepository _taskRecordRepository;
     public TaskRecordService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)
     {
         _mapper = mapper;
+        _taskRecordRepository = UnitOfWork.TaskRecordRepository;
     }
 
     public async Task<AddTaskRecordResponse> AddAsync(AddTaskRecordRequest request)
     {
-        var repository = UnitOfWork.TaskRecordRepository;
-
-        var taskExist = await repository.GetTaskRecordByUserIdAndTaskIdAsync(request.UserId, request.TaskId);
+        var taskExist = await _taskRecordRepository.GetTaskRecordByUserIdAndTaskIdAsync(request.UserId, request.TaskId);
         if (taskExist != null)
         {
             throw new NotFoundException();
@@ -33,7 +34,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
 
         var taskRecord = _mapper.Map<TaskRecord>(request);
 
-        await repository.InsertAsync(taskRecord);
+        await _taskRecordRepository.InsertAsync(taskRecord);
         await UnitOfWork.Save();
 
         var response = _mapper.Map<AddTaskRecordResponse>(taskRecord);
@@ -43,9 +44,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
     
     public async Task<UpdateTaskRecordResponse> UpdateAsync(UpdateTaskRecordRequest request)
     {
-        var repository = UnitOfWork.TaskRecordRepository;
-
-        var taskRecord = await repository.GetTaskRecordByUserIdAndTaskIdAsync(request.UserId, request.TaskId);
+        var taskRecord = await _taskRecordRepository.GetTaskRecordByUserIdAndTaskIdAsync(request.UserId, request.TaskId);
         if (taskRecord != null)
         {
             throw new NotFoundException();
@@ -56,7 +55,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
         taskRecord.DateCompleted = request.DateCompleted;
         taskRecord.TimeSpent = request.TimeSpent;
 
-        await repository.UpdateAsync(taskRecord);
+        await _taskRecordRepository.UpdateAsync(taskRecord);
         await UnitOfWork.Save();
 
         var response = _mapper.Map<UpdateTaskRecordResponse>(taskRecord);
@@ -66,15 +65,13 @@ public class TaskRecordService : BaseService, ITaskRecordService
 
     public async Task<DeleteTaskRecordResponse> DeleteAsync(int id)
     {
-        var repository = UnitOfWork.TaskRecordRepository;
-
-        var taskRecord = await repository.GetTaskRecordByIdAsync(id);
+        var taskRecord = await _taskRecordRepository.GetTaskRecordByIdAsync(id);
         if (taskRecord is null)
         {
             throw new NotFoundException();
         }
 
-        await repository.DeleteAsync(taskRecord.Id);
+        await _taskRecordRepository.DeleteAsync(taskRecord.Id);
         await UnitOfWork.Save();
 
         var response = _mapper.Map<DeleteTaskRecordResponse>(taskRecord);
@@ -84,9 +81,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
 
     public async Task<GetTaskRecordResponse> GetAsync(int id)
     {
-        var repository = UnitOfWork.TaskRecordRepository;
-
-        var taskRecord = await repository.GetTaskRecordByIdAsync(id);
+        var taskRecord = await _taskRecordRepository.GetTaskRecordByIdAsync(id);
         if (taskRecord is null)
         {
             throw new NotFoundException();
@@ -99,9 +94,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
     
     public async Task<GetTaskRecordResponse> GetAsync(int userId, int taskId)
     {
-        var repository = UnitOfWork.TaskRecordRepository;
-
-        var taskRecord = await repository.GetTaskRecordByUserIdAndTaskIdAsync(userId, taskId);
+        var taskRecord = await _taskRecordRepository.GetTaskRecordByUserIdAndTaskIdAsync(userId, taskId);
         if (taskRecord is null)
         {
             throw new NotFoundException();
@@ -114,9 +107,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
 
     public async Task<List<GetTaskRecordResponse>> GetAllAsync()
     {
-        var repository = UnitOfWork.TaskRecordRepository;
-
-        var taskRecords = await repository.GetAllTaskRecordsAsync();
+        var taskRecords = await _taskRecordRepository.GetAllTaskRecordsAsync();
 
         var taskDTOs = _mapper.Map<List<GetTaskRecordResponse>>(taskRecords);
 
@@ -125,6 +116,6 @@ public class TaskRecordService : BaseService, ITaskRecordService
 
     public async Task<int> GetTaskPriorityByTaskRecords(string priority, DateTime date)
     {
-        return await UnitOfWork.TaskRecordRepository.GetTaskPriorityByTaskRecord(priority, date);
+        return await _taskRecordRepository.GetTaskPriorityByTaskRecord(priority, date);
     }
 }

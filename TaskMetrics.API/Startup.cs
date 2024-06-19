@@ -1,6 +1,9 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.OpenApi.Models;
 using task_api.TaskMetrics.API.Extenstions;
 using task_api.TaskMetrics.API.Handlers;
+using task_api.TaskMetrics.API.Services;
 using task_api.TaskMetrics.Infrastructure;
 
 namespace task_api.TaskMetrics.API;
@@ -19,16 +22,19 @@ public class Startup
         // Application services
         services
             .AddDatabase(Configuration)
-            .AddUnitOfWork()
             .AddApiAuthentication(Configuration)
+            .AddJwtGenerating(Configuration)
+            .AddUnitOfWork()
             .AddPasswordHasher()
             .AddGlobalExceptionFilter()
+            .AddContextAccessor()
             .AddServices()
             .AddAutoMapper()
-            .AddControllers()
-            /*.AddJwtGenerating(Configuration)*/;
-        ;
+            .AddCustomAuthorization();
         
+
+        services.AddControllers();
+  
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -53,8 +59,15 @@ public class Startup
         app.UseRouting();
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
+        app.UseCookiePolicy(new CookiePolicyOptions()
+        {
+            MinimumSameSitePolicy = SameSiteMode.Strict,
+            Secure = CookieSecurePolicy.Always,
+            HttpOnly = HttpOnlyPolicy.Always
+        });
+        
         app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {

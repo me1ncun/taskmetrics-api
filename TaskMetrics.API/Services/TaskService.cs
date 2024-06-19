@@ -7,6 +7,7 @@ using task_api.TaskMetrics.API.DTOs.TaskItems.UpdateTaskItem;
 using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Exceptions;
 using task_api.TaskMetrics.Domain.Interfaces;
+using task_api.TaskMetrics.Infrastructure.Repositories.TaskItem.Base;
 using Task = task_api.Domain.Task;
 
 namespace task_api.TaskMetrics.API.Services;
@@ -14,16 +15,16 @@ namespace task_api.TaskMetrics.API.Services;
 public class TaskService : BaseService, ITaskService
 {
     private readonly IMapper _mapper;
+    private readonly TaskRepository _taskRepository;
     public TaskService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork)
     {
         _mapper = mapper;
+        _taskRepository = UnitOfWork.TaskRepository;
     }
     
     public async Task<AddTaskResponse> AddAsync(AddTaskRequest request)
     {
-        var repository = UnitOfWork.TaskRepository;
-
-        var taskExist = await repository.GetTaskByTitleAsync(request.Title);
+        var taskExist = await _taskRepository.GetTaskByTitleAsync(request.Title);
         if (taskExist != null)
         {
             throw new NotFoundException();
@@ -31,7 +32,7 @@ public class TaskService : BaseService, ITaskService
 
         var task = _mapper.Map<Task>(request);
 
-        await repository.InsertAsync(task);
+        await _taskRepository.InsertAsync(task);
         await UnitOfWork.Save();
 
         var response = _mapper.Map<AddTaskResponse>(task);
@@ -41,9 +42,7 @@ public class TaskService : BaseService, ITaskService
 
     public async Task<UpdateTaskResponse> UpdateAsync(UpdateTaskRequest request)
     {
-        var repository = UnitOfWork.TaskRepository;
-
-        var task = await repository.GetTaskByTitleAsync(request.Title);
+        var task = await _taskRepository.GetTaskByTitleAsync(request.Title);
         if (task is null)
         {
             throw new NotFoundException();
@@ -54,7 +53,7 @@ public class TaskService : BaseService, ITaskService
         task.DueDate = request.DueDate;
         task.Priority = request.Priority;
 
-        await repository.UpdateAsync(task);
+        await _taskRepository.UpdateAsync(task);
         await UnitOfWork.Save();
 
         var response = _mapper.Map<UpdateTaskResponse>(task);
@@ -64,15 +63,13 @@ public class TaskService : BaseService, ITaskService
 
     public async Task<DeleteTaskResponse> DeleteAsync(int id)
     {
-        var repository = UnitOfWork.TaskRepository;
-
-        var task = await repository.GetTaskByIdAsync(id);
+        var task = await _taskRepository.GetTaskByIdAsync(id);
         if (task is null)
         {
             throw new NotFoundException();
         }
 
-        await repository.DeleteAsync(task.Id);
+        await _taskRepository.DeleteAsync(task.Id);
         await UnitOfWork.Save();
 
         var response = _mapper.Map<DeleteTaskResponse>(task);
@@ -82,9 +79,7 @@ public class TaskService : BaseService, ITaskService
 
     public async Task<GetTaskResponse> GetAsync(int id)
     {
-        var repository = UnitOfWork.TaskRepository;
-
-        var task = await repository.GetTaskByIdAsync(id);
+        var task = await _taskRepository.GetTaskByIdAsync(id);
         if (task is null)
         {
             throw new NotFoundException();
@@ -97,9 +92,7 @@ public class TaskService : BaseService, ITaskService
     
     public async Task<GetTaskResponse> GetAsync(string title)
     {
-        var repository = UnitOfWork.TaskRepository;
-
-        var task = await repository.GetTaskByTitleAsync(title);
+        var task = await _taskRepository.GetTaskByTitleAsync(title);
         if (task is null)
         {
             throw new NotFoundException();
@@ -112,9 +105,7 @@ public class TaskService : BaseService, ITaskService
 
     public async Task<List<GetTaskResponse>> GetAllAsync()
     {
-        var repository = UnitOfWork.TaskRepository;
-
-        var tasks = await repository.GetAllTasksAsync();
+        var tasks = await _taskRepository.GetAllTasksAsync();
         
         var taskDTOs = _mapper.Map<List<GetTaskResponse>>(tasks);
 
