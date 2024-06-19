@@ -30,17 +30,17 @@ public class TaskRecordRepository : GenericRepository<TaskRecord>, ITaskRecordRe
         return await _context.TaskRecords.FirstOrDefaultAsync(x => x.UserId == userId && x.TaskId == taskId);
     }
 
-    public async Task<int> GetTaskPriorityByTaskRecord(string priority)
+    public async Task<int> GetTaskPriorityByTaskRecord(string priority, DateTime date)
     {
         var connection = _context.Database.GetDbConnection();
         
         var sql = @"
         SELECT Count(*) as PriorityCount
         FROM ""TaskRecords"" tr
-        JOIN ""Tasks"" t ON tr.""TaskId"" = t.""Id"" AND t.""Priority"" = @priority
-        WHERE t.""Priority""= @priority
+        JOIN ""Tasks"" t ON tr.""TaskId"" = t.""Id""
+        WHERE t.""Priority""= @priority AND tr.""DateCompleted"" = @date
         GROUP BY t.""Priority"";";
     
-        return await connection.QueryFirstOrDefaultAsync<int>(sql, new {priority});
+        return await connection.QueryFirstOrDefaultAsync<int>(sql, new {priority, date});
     }
 }

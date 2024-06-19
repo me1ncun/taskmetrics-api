@@ -35,7 +35,7 @@ namespace task_api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("DueDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
                     b.Property<string>("Priority")
                         .IsRequired()
@@ -59,7 +59,7 @@ namespace task_api.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateCompleted")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
                     b.Property<int>("TaskId")
                         .HasColumnType("integer");

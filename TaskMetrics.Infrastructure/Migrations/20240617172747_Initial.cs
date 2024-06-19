@@ -21,7 +21,7 @@ namespace task_api.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Priority = table.Column<string>(type: "text", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    DueDate = table.Column<DateTime>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,7 +51,7 @@ namespace task_api.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     TaskId = table.Column<int>(type: "integer", nullable: false),
-                    DateCompleted = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateCompleted = table.Column<DateTime>(type: "date", nullable: false),
                     TimeSpent = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

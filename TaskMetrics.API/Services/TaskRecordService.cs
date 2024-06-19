@@ -123,8 +123,8 @@ public class TaskRecordService : BaseService, ITaskRecordService
         return taskDTOs;
     }
 
-    public async Task<int> GetTaskPriorityByTaskRecords(string priority)
+    public async Task<int> GetTaskPriorityByTaskRecords(string priority, DateTime date)
     {
-        return await UnitOfWork.TaskRecordRepository.GetTaskPriorityByTaskRecord(priority);
+        return await UnitOfWork.TaskRecordRepository.GetTaskPriorityByTaskRecord(priority, date);
     }
 }

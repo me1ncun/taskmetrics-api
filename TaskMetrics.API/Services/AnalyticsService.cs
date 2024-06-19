@@ -15,15 +15,15 @@ public class AnalyticsService: IAnalyticsService
     public async Task<Analytics> GetAsync(DateTime date)
     {
         var records =  await _taskRecordService.GetAllAsync();
-        var sortedRecords = records.Where(x => x.DateCompleted.Date == date);
+        var sortedRecords = records.Where(x => x.DateCompleted == date);
         var totalTime = sortedRecords.Sum(r => r.TimeSpent);
         var totalTasks = sortedRecords.Count();
 
         var analytics = new Dictionary<string, int>()
         {
-            {"High", await _taskRecordService.GetTaskPriorityByTaskRecords("high")},
-            {"Medium", await _taskRecordService.GetTaskPriorityByTaskRecords("medium")},
-            {"Low", await _taskRecordService.GetTaskPriorityByTaskRecords("low")},
+            {"High", await _taskRecordService.GetTaskPriorityByTaskRecords("high", date)},
+            {"Medium", await _taskRecordService.GetTaskPriorityByTaskRecords("medium", date)},
+            {"Low", await _taskRecordService.GetTaskPriorityByTaskRecords("low", date)},
         };
 
         return new Analytics
