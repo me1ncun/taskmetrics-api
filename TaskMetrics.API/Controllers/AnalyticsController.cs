@@ -18,6 +18,11 @@ public class AnalyticsController: ControllerBase
         _logger = logger;
     }
     
+    /// <summary>
+    /// Get analytics by done task-records
+    /// </summary>
+    /// <response code="200">Returns the newly created item</response>
+    /// <response code="400">If the item is null</response>
     [HttpGet("/api/summary/analytics/")]
     public async Task<IActionResult> Get(DateTime? date)
     {

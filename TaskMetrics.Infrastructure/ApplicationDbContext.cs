@@ -4,6 +4,7 @@ using Task = task_api.Domain.Task;
 
 namespace task_api.TaskMetrics.Infrastructure;
 
+// application db context
 public class ApplicationDbContext: DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

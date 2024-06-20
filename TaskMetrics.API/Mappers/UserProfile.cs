@@ -5,6 +5,7 @@ using task_api.TaskMetrics.API.DTOs.Auth.Login;
 
 namespace task_api.TaskMetrics.API.Mappers;
 
+// mapping user
 public class UserProfile : Profile
 {
     public UserProfile()

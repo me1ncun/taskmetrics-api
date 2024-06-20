@@ -4,6 +4,7 @@ using task_api.TaskMetrics.Infrastructure.Repositories;
 
 namespace task_api.Domain;
 
+// auth repository
 public class AuthRepository : GenericRepository<User>, IAuthRepository
 {
     private readonly ApplicationDbContext _context;

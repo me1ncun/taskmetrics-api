@@ -2,6 +2,7 @@
 
 namespace task_api.Domain;
 
+// analytics entity
 public class Analytics
 {
     public int TotalTasks { get; set; }

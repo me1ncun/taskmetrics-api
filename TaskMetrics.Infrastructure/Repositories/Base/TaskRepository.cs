@@ -5,6 +5,7 @@ using Task = task_api.Domain.Task;
 
 namespace task_api.TaskMetrics.Infrastructure.Repositories.TaskItem.Base;
 
+// task repository
 public class TaskRepository : GenericRepository<Task>, ITaskRepository
 {
     private readonly ApplicationDbContext _context;

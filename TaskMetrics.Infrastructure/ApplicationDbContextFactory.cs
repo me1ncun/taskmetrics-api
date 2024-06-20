@@ -4,6 +4,7 @@ using task_api.TaskMetrics.Infrastructure;
 
 namespace task_api.TaskMetrics.Domain;
 
+// application db context factory
 public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {
     public ApplicationDbContext CreateDbContext(string[] args)

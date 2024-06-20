@@ -7,6 +7,7 @@ using task_api.Domain;
 
 namespace task_api.TaskMetrics.API.Helpers.Jwt;
 
+// generate token for user
 public class JwtProvider
 {
     private readonly JwtOptions _options;

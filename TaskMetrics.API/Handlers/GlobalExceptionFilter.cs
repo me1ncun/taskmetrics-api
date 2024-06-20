@@ -5,6 +5,7 @@ using task_api.TaskMetrics.Domain.Exceptions;
 
 namespace task_api.TaskMetrics.API.Handlers;
 
+// global exception filter, which catches all exceptions and returns a response with a status code
 public class GlobalExceptionFilter : IExceptionFilter
 {
     public void OnException(ExceptionContext context)

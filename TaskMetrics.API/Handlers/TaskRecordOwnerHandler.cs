@@ -6,7 +6,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace task_api.TaskMetrics.API.Handlers;
 
-public class TaskRecordOwnerRequirement : IAuthorizationRequirement
+/*public class TaskRecordOwnerRequirement : IAuthorizationRequirement
 {
 }
 
@@ -30,4 +30,4 @@ public class TaskRecordOwnerHandler : AuthorizationHandler<TaskRecordOwnerRequir
         
         return Task.CompletedTask;
     }
-}
+}*/

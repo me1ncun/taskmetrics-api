@@ -4,6 +4,7 @@ using task_api.TaskMetrics.Domain.Interfaces;
 
 namespace task_api.TaskMetrics.Infrastructure.Repositories;
 
+// generic repository
 public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly ApplicationDbContext _context;

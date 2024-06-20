@@ -9,6 +9,7 @@ using Task = task_api.Domain.Task;
 
 namespace task_api.TaskMetrics.Infrastructure.Repositories.Base;
 
+// task record repository
 public class TaskRecordRepository : GenericRepository<TaskRecord>, ITaskRecordRepository
 {
     public TaskRecordRepository(ApplicationDbContext context) : base(context)
@@ -30,6 +31,7 @@ public class TaskRecordRepository : GenericRepository<TaskRecord>, ITaskRecordRe
         return await _context.TaskRecords.FirstOrDefaultAsync(x => x.UserId == userId && x.TaskId == taskId);
     }
 
+    // get task record by user id with dapper
     public async Task<int> GetTaskPriorityByTaskRecord(string priority, DateTime date)
     {
         var connection = _context.Database.GetDbConnection();

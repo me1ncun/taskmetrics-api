@@ -11,6 +11,7 @@ using task_api.TaskMetrics.Infrastructure.Repositories;
 
 namespace task_api.TaskMetrics.API.Services;
 
+// service for auth
 public class AuthService : BaseService, IAuthService
 {
     private readonly IMapper _mapper;

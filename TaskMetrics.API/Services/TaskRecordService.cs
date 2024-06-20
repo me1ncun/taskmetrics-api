@@ -14,6 +14,7 @@ using task_api.TaskMetrics.Infrastructure.Repositories.Base;
 
 namespace task_api.TaskMetrics.API.Services;
 
+// service for TaskRecord
 public class TaskRecordService : BaseService, ITaskRecordService
 {
     private readonly IMapper _mapper;

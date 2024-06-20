@@ -1,7 +1,6 @@
-﻿
+﻿namespace task_api.Domain;
 
-namespace task_api.Domain;
-
+// user entity
 public class User
 {
     public int Id { get; set; }

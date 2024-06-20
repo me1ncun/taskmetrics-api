@@ -9,6 +9,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace task_api.TaskMetrics.Infrastructure;
 
+// unit of work pattern
 public class UnitOfWork : IUnitOfWork, IDisposable
 {
     public ApplicationDbContext Context;

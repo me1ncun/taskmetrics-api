@@ -13,6 +13,7 @@ using task_api.TaskMetrics.Infrastructure.Repositories;
 
 namespace task_api.TaskMetrics.API.Extenstions;
 
+// service collection extension
 public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddUnitOfWork(this IServiceCollection services)
@@ -69,7 +70,7 @@ public static class ServiceCollectionExtension
             HttpContextAccessor>();
     }
 
-    public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
+    /*public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
     {
         return services
             .AddAuthorization(options =>
@@ -78,5 +79,5 @@ public static class ServiceCollectionExtension
                     policy.Requirements.Add(new TaskRecordOwnerRequirement()));
             })
             .AddTransient<IAuthorizationHandler, TaskRecordOwnerHandler>();
-    }
+    }*/
 }

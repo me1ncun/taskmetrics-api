@@ -2,6 +2,7 @@
 
 namespace task_api.TaskMetrics.Infrastructure.Repositories.Interface;
 
+// task record repository interface
 public interface ITaskRecordRepository
 {
     Task<IEnumerable<TaskRecord>> GetAllTaskRecordsAsync();

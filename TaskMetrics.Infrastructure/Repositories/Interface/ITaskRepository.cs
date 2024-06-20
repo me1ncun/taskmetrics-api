@@ -4,6 +4,7 @@ using Task = task_api.Domain.Task;
 
 namespace task_api.TaskMetrics.Infrastructure.Repositories.TaskItem.Interface;
 
+// task repository interface
 public interface ITaskRepository: IGenericRepository<task_api.Domain.Task>
 {
     Task<IEnumerable<Task>> GetAllTasksAsync();

@@ -5,6 +5,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace task_api.TaskMetrics.Domain.Interfaces;
 
+// unit of work interface
 public interface IUnitOfWork
 {
     AuthRepository AuthRepository { get; }

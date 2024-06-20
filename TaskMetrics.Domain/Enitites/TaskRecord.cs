@@ -2,6 +2,7 @@
 
 namespace task_api.Domain;
 
+// task record entity
 public class TaskRecord
 {
     public int Id { get; set; }

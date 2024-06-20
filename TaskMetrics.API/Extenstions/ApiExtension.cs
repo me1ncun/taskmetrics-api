@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace task_api.TaskMetrics.API.Extenstions;
 
+// jwt authentication extension
 public static class ApiExtension
 {
     public static IServiceCollection AddApiAuthentication(this IServiceCollection services,

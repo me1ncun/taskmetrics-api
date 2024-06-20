@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.OpenApi.Models;
 using task_api.TaskMetrics.API.Extenstions;
@@ -17,6 +18,7 @@ public class Startup
 
     public IConfiguration Configuration { get; }
     
+    // add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
         // Application services
@@ -30,14 +32,33 @@ public class Startup
             .AddContextAccessor()
             .AddServices()
             .AddAutoMapper()
-            .AddCustomAuthorization();
+            /*.AddCustomAuthorization()*/;
         
 
         services.AddControllers();
   
-        services.AddSwaggerGen(c =>
+        // add swagger documentation
+        services.AddSwaggerGen(options =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "ToDo API",
+                Description = "An ASP.NET Core Web API for managing ToDo items",
+                Contact = new OpenApiContact
+                {
+                    Name = "Shapovalov Denis",
+                    Url = new Uri("https://t.me/den1sshap")
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "The MIT License",
+                    Url = new Uri("https://www.mit.edu/~amini/LICENSE.md")
+                }
+            });
+            
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
     }
 
@@ -59,6 +80,7 @@ public class Startup
         app.UseRouting();
         app.UseHttpsRedirection();
 
+        // add cookie policy
         app.UseCookiePolicy(new CookiePolicyOptions()
         {
             MinimumSameSitePolicy = SameSiteMode.Strict,

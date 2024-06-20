@@ -22,6 +22,11 @@ public class TaskController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Create a new task
+    /// </summary>
+    /// <response code="200">Returns the newly created item</response>
+    /// <response code="400">If the item is null</response>
     [HttpPost("/api/task/")]
     public async Task<IActionResult> Add([FromBody] AddTaskRequest request)
     {
@@ -30,6 +35,11 @@ public class TaskController : ControllerBase
         return Ok(task);
     }
 
+    /// <summary>
+    /// Get all tasks
+    /// </summary>
+    /// <response code="200">Returns the list of tasks</response>
+    /// <response code="400">If the list is null</response>
     [HttpGet("/api/tasks/")]
     public async Task<IActionResult> Get()
     {
@@ -42,6 +52,11 @@ public class TaskController : ControllerBase
         return Ok(tasks);
     }
 
+    /// <summary>
+    /// Get task by id
+    /// </summary>
+    /// <response code="200">Returns the special task by id</response>
+    /// <response code="400">If the task not found</response>
     [HttpGet("/api/task/{id}")]
     public async Task<IActionResult> Details([FromRoute] int id)
     {
@@ -54,6 +69,11 @@ public class TaskController : ControllerBase
         return Ok(task);
     }
 
+    /// <summary>
+    /// Delete task by id
+    /// </summary>
+    /// <response code="200">Returns the deleted task</response>
+    /// <response code="400">If the task not found</response>
     [HttpDelete("/api/task/{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
@@ -68,6 +88,11 @@ public class TaskController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Update task
+    /// </summary>
+    /// <response code="200">Returns the updated task</response>
+    /// <response code="400">If the task not found</response>
     [HttpPut("/api/task/update/")]
     public async Task<IActionResult> Update([FromBody] UpdateTaskRequest request)
     {

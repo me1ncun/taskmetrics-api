@@ -3,6 +3,7 @@ using task_api.TaskMetrics.API.Services.Interfaces;
 
 namespace task_api.TaskMetrics.API.Services;
 
+// service for analytics
 public class AnalyticsService: IAnalyticsService
 {
     private readonly ITaskRecordService _taskRecordService;

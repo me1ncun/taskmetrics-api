@@ -3,6 +3,7 @@ using System.Text;
 
 namespace task_api.TaskMetrics.API.Helpers;
 
+// hash and verify password
 public class HashPasswordHelper
 {
     public string HashPassword(string password)

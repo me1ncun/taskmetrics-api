@@ -1,5 +1,6 @@
 ﻿namespace task_api.Domain;
 
+// task entity
 public class Task
 {
     public int Id { get; set; }

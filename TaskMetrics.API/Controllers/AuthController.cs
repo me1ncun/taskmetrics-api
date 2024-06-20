@@ -22,7 +22,13 @@ namespace task_api.Controllers
             _authService = authService;
             _httpContextAccessor = httpContextAccessor;
         }
-
+        
+        
+        /// <summary>
+        /// Register a new user and get token
+        /// </summary>
+        /// <response code="200">Returns the newly created account with jwt token</response>
+        /// <response code="500">If the account already exists or an error has occurred</response>
         [HttpPost("/api/user/register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
         {
@@ -50,6 +56,11 @@ namespace task_api.Controllers
             }
         }
         
+        /// <summary>
+        /// Login by data and get token
+        /// </summary>
+        /// <response code="200">Returns the logged account with jwt token</response>
+        /// <response code="500">If the account dont exists or an error has occurred</response>
         [HttpPost("/api/user/login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
         {

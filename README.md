@@ -9,9 +9,8 @@
       - Поля: пользователь(ForeignKey на User) задача(ForeignKey на TaskItem), дата выполнения, затраченное время в минутах.
 2. API эндпоинты:
    - CRUD для User:
-     - Создание: POST /api/user/
-     - Просмотр всех пользователей: GET /api/user/
-     - Удаление: DELETE /api/user/{id}/
+     - Регистрация: POST /api/user/register
+     - Авторизация: GET /api/user/login
    
     - CRUD для Task:
       - Создание: POST /api/task/

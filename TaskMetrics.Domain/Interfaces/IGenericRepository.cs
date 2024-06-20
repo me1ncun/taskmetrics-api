@@ -1,5 +1,6 @@
 ﻿namespace task_api.TaskMetrics.Domain.Interfaces;
 
+// generic repository interface
 public interface IGenericRepository<T> where T : class
 {
     Task<IEnumerable<T>> GetAllAsync();
