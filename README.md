@@ -11,7 +11,6 @@
    - CRUD для User:
      - Регистрация: POST /api/user/register
      - Авторизация: GET /api/user/login
-   
     - CRUD для Task:
       - Создание: POST /api/task/
       - Просмотр списка: GET /api/task/
