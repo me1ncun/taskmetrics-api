@@ -19,7 +19,7 @@ public class JwtProvider
     
     public string GenerateToken(User user)
     {
-        Claim[] claims = [new("userEmail", user.Email)];
+        Claim[] claims = [new (ClaimTypes.NameIdentifier, Convert.ToString(user.Id)), new("userEmail", user.Email)];
         
         var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.HmacSha256Signature);
 
@@ -28,5 +28,31 @@ public class JwtProvider
         var tokenHandler = new JwtSecurityTokenHandler();
         
         return tokenHandler.WriteToken(token);
+    }
+    
+    public ClaimsPrincipal ValidateJwtToken(string token)
+    {
+        // Retrieve the JWT secret from environment variables and encode it
+        var key = Encoding.ASCII.GetBytes(_options.SecretKey);
+
+        try
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var claimsPrincipal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            }, out SecurityToken validatedToken);
+
+            // Return the claims principal
+            return claimsPrincipal;
+        }
+        catch (SecurityTokenExpiredException)
+        {
+            // Handle token expiration
+            throw new ApplicationException("Token has expired.");
+        }
     }
 }

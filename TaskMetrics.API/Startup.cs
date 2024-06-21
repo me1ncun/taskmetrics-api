@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using task_api.TaskMetrics.API.Extenstions;
 using task_api.TaskMetrics.API.Handlers;
@@ -31,8 +32,7 @@ public class Startup
             .AddGlobalExceptionFilter()
             .AddContextAccessor()
             .AddServices()
-            .AddAutoMapper()
-            /*.AddCustomAuthorization()*/;
+            .AddAutoMapper();
         
 
         services.AddControllers();

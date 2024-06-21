@@ -69,15 +69,4 @@ public static class ServiceCollectionExtension
         return services.AddSingleton<IHttpContextAccessor,
             HttpContextAccessor>();
     }
-
-    /*public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
-    {
-        return services
-            .AddAuthorization(options =>
-            {
-                options.AddPolicy("TaskRecordOwnerPolicy", policy =>
-                    policy.Requirements.Add(new TaskRecordOwnerRequirement()));
-            })
-            .AddTransient<IAuthorizationHandler, TaskRecordOwnerHandler>();
-    }*/
 }

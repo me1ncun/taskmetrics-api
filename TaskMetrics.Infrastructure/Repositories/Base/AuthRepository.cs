@@ -21,4 +21,12 @@ public class AuthRepository : GenericRepository<User>, IAuthRepository
         
         return user;
     }
+    
+    public User GetUserByIdAsync(int id)
+    {
+        var user = _context.Users
+            .FirstOrDefault(c => c.Id == id);
+        
+        return user;
+    }
 }

@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using task_api.TaskMetrics.API.DTOs.TaskRecord.AddTaskRecord;
 using task_api.TaskMetrics.API.DTOs.TaskRecord.DeleteTaskRecord;
 using task_api.TaskMetrics.API.DTOs.TaskRecord.GetTaskRecord;
 using task_api.TaskMetrics.API.DTOs.TaskRecord.UpdateTaskRecord;
+using task_api.TaskMetrics.API.Helpers.Jwt;
 using task_api.TaskMetrics.API.Services;
 using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Exceptions;
@@ -16,12 +21,15 @@ public class TaskRecordController: ControllerBase
 {
     private readonly ITaskRecordService _taskRecordService;
     private readonly ILogger<TaskController> _logger;
+    private readonly JwtProvider _jwtProvider;
 
     public TaskRecordController(ITaskRecordService taskRecordService,
-        ILogger<TaskController> logger)
+        ILogger<TaskController> logger,
+        JwtProvider jwtProvider)
     {
         _taskRecordService = taskRecordService;
         _logger = logger;
+        _jwtProvider = jwtProvider;
     }
 
     /// <summary>
@@ -78,12 +86,34 @@ public class TaskRecordController: ControllerBase
         try
         {
             var taskRecord = await _taskRecordService.GetAsync(id);
-
-            return Ok(taskRecord);
+            
+            var token = HttpContext.Request.Cookies["token"];
+            
+            var claimsPrincipal = _jwtProvider.ValidateJwtToken(token);
+            
+            if (claimsPrincipal?.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized("Token has expired.");
+            }
+            
+            int userId = int.Parse(claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            
+            if (userId == taskRecord.UserId)
+            {
+                return Ok(taskRecord);
+            }
+            else
+            {
+                throw new NotFoundException("User not found or it is not your task-record.");
+            }
         }
         catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
+        }
+        catch (SecurityTokenExpiredException)
+        {
+            return Unauthorized("Token has expired.");
         }
     }
 
@@ -99,12 +129,34 @@ public class TaskRecordController: ControllerBase
         try
         {
             var response = await _taskRecordService.DeleteAsync(id);
-
-            return Ok(response);
+            
+            var token = HttpContext.Request.Cookies["token"];
+            
+            var claimsPrincipal = _jwtProvider.ValidateJwtToken(token);
+            
+            if (claimsPrincipal?.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized("Token has expired.");
+            }
+            
+            int userId = int.Parse(claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            
+            if (userId == response.UserId)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                throw new NotFoundException("User not found or it is not your task-record.");
+            }
         }
         catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
+        }
+        catch (SecurityTokenExpiredException)
+        {
+            return Unauthorized("Token has expired.");
         }
     }
 
@@ -120,12 +172,36 @@ public class TaskRecordController: ControllerBase
         try
         {
             var response = await _taskRecordService.UpdateAsync(request);
-
+            
+            var token = HttpContext.Request.Cookies["token"];
+            
+            var claimsPrincipal = _jwtProvider.ValidateJwtToken(token);
+            
+            if (claimsPrincipal?.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized("Token has expired.");
+            }
+            
+            int userId = int.Parse(claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            
+            if (userId == response.UserId)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                throw new NotFoundException("User not found or it is not your task-record.");
+            }
+            
             return Ok(response);
         }
         catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
+        }
+        catch (SecurityTokenExpiredException)
+        {
+            return Unauthorized("Token has expired.");
         }
     }
 }

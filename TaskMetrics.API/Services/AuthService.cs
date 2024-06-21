@@ -8,6 +8,7 @@ using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Exceptions;
 using task_api.TaskMetrics.Domain.Interfaces;
 using task_api.TaskMetrics.Infrastructure.Repositories;
+using Xunit.Sdk;
 
 namespace task_api.TaskMetrics.API.Services;
 
@@ -53,14 +54,24 @@ public class AuthService : BaseService, IAuthService
         {
             throw new NotFoundException();
         }
-
-        var user = _mapper.Map<User>(request);
         
-        var token = _jwtProvider.GenerateToken(user);
+        var token = _jwtProvider.GenerateToken(userExist);
         
-        var response = _mapper.Map<LoginUserResponse>(user);
+        var response = _mapper.Map<LoginUserResponse>(userExist);
         response.Token = token;
 
         return response;
     }
+
+    public User GetUserById(int id)
+    {
+        var user = _authRepository.GetUserByIdAsync(id);
+        if (user == null)
+        {
+            throw new NotFoundException();
+        }
+
+        return user;
+    }
+    
 }
