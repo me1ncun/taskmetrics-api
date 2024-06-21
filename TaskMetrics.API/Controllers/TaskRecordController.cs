@@ -6,6 +6,7 @@ using task_api.TaskMetrics.API.DTOs.TaskRecord.GetTaskRecord;
 using task_api.TaskMetrics.API.DTOs.TaskRecord.UpdateTaskRecord;
 using task_api.TaskMetrics.API.Services;
 using task_api.TaskMetrics.API.Services.Interfaces;
+using task_api.TaskMetrics.Domain.Exceptions;
 
 namespace task_api.Controllers;
 
@@ -15,112 +16,116 @@ public class TaskRecordController: ControllerBase
 {
     private readonly ITaskRecordService _taskRecordService;
     private readonly ILogger<TaskController> _logger;
-    /*private readonly IAuthorizationService _authorizationService;*/
 
     public TaskRecordController(ITaskRecordService taskRecordService,
-        ILogger<TaskController> logger
-        /*IAuthorizationService authorizationService*/)
+        ILogger<TaskController> logger)
     {
         _taskRecordService = taskRecordService;
         _logger = logger;
-        /*_authorizationService = authorizationService;*/
     }
 
     /// <summary>
     /// Create a new task-record
     /// </summary>
     /// <response code="200">Returns the newly created item</response>
-    /// <response code="400">If the item is null</response>
+    /// <response code="400">If the task record already exist</response>
     [Authorize]
     [HttpPost("/api/task-record/")]
     public async Task<IActionResult> Add([FromBody] AddTaskRecordRequest request)
     {
-        var taskRecord = await _taskRecordService.AddAsync(request);
-        
-        /*// AuthorizationHandler will automatically check ownership
-        var authorizationResult = await _authorizationService.AuthorizeAsync(User, taskRecord, "TaskRecordOwnerPolicy");
-
-        if (!authorizationResult.Succeeded)
+        try
         {
-            return Forbid();
-        }*/
+            var taskRecord = await _taskRecordService.AddAsync(request);
         
-        return Ok(taskRecord);
+            return Ok(taskRecord);
+        }
+        catch (ThrownException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
     
     /// <summary>
     /// Get all task-records
     /// </summary>
     /// <response code="200">Returns the list of task-records</response>
-    /// <response code="400">If the list not found</response>
+    /// <response code="404">If the list of task-records not found</response>
     [Authorize]
     [HttpGet("/api/task-records/")]
     public async Task<IActionResult> Get()
     {
-        var taskRecords = await _taskRecordService.GetAllAsync();
-        if (taskRecords is null)
+        try
         {
-            return NotFound();
-        }
+            var taskRecords = await _taskRecordService.GetAllAsync();
 
-        return Ok(taskRecords);
+            return Ok(taskRecords);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     /// <summary>
     /// Get task-record by id
     /// </summary>
     /// <response code="200">Returns the details of task-record by id</response>
-    /// <response code="400">If the task-record not found</response>
+    /// <response code="404">If the task-record not found</response>
     [Authorize]
     [HttpGet("/api/task-record/{id}")]
     public async Task<IActionResult> Details([FromRoute] int id)
     {
-        var taskRecord = await _taskRecordService.GetAsync(id);
-        if (taskRecord is null)
+        try
         {
-            return NotFound();
-        }
+            var taskRecord = await _taskRecordService.GetAsync(id);
 
-        return Ok(taskRecord);
+            return Ok(taskRecord);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     /// <summary>
     /// Delete task-record by id
     /// </summary>
     /// <response code="200">Returns the deleted task-record</response>
-    /// <response code="400">If the task-record not found</response>
+    /// <response code="404">If the task-record not found</response>
     [Authorize]
     [HttpDelete("/api/task-record/{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
-        var taskRecord = await _taskRecordService.GetAsync(id);
-        if (taskRecord is null)
+        try
         {
-            return NotFound();
+            var response = await _taskRecordService.DeleteAsync(id);
+
+            return Ok(response);
         }
-
-        var response = await _taskRecordService.DeleteAsync(id);
-
-        return Ok(response);
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     /// <summary>
     /// Update task-record
     /// </summary>
     /// <response code="200">Returns the updated task-record</response>
-    /// <response code="400">If the task-record not found</response>
+    /// <response code="404">If the task-record not found</response>
     [Authorize]
     [HttpPut("/api/task-record/update/")]
     public async Task<IActionResult> Update([FromBody] UpdateTaskRecordRequest request)
     {
-        var taskRecord = await _taskRecordService.GetAsync(request.UserId, request.TaskId);
-        if (taskRecord is null)
+        try
         {
-            return NotFound();
+            var response = await _taskRecordService.UpdateAsync(request);
+
+            return Ok(response);
         }
-
-        var response = await _taskRecordService.UpdateAsync(request);
-
-        return Ok(response);
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

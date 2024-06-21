@@ -26,16 +26,24 @@ public class AnalyticsController: ControllerBase
     [HttpGet("/api/summary/analytics/")]
     public async Task<IActionResult> Get(DateTime? date)
     {
-        var actualDate = date ?? DateTime.Today;
-        
-        var analytics = await _analyticsService.GetAsync(actualDate);
-        
-        if (analytics is null)
+        try
         {
-            return NotFound();
-        }
+            var actualDate = date ?? DateTime.Today;
         
-        return Ok(analytics);
+            var analytics = await _analyticsService.GetAsync(actualDate);
+        
+            if (analytics is null)
+            {
+                return NotFound();
+            }
+        
+            return Ok(analytics);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while getting analytics");
+            return StatusCode(500);
+        }
     }
     
 }

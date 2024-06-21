@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using task_api.Domain;
@@ -28,7 +29,7 @@ namespace task_api.Controllers
         /// Register a new user and get token
         /// </summary>
         /// <response code="200">Returns the newly created account with jwt token</response>
-        /// <response code="500">If the account already exists or an error has occurred</response>
+        /// <response code="400">If the account already exists or an error has occurred</response>
         [HttpPost("/api/user/register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
         {
@@ -38,7 +39,7 @@ namespace task_api.Controllers
 
                 _httpContextAccessor.HttpContext.Response.Cookies.Append("token", user.Token,  new CookieOptions
                 {
-                    MaxAge = TimeSpan.FromMinutes(60),
+                    MaxAge = TimeSpan.FromMinutes(20),
                     HttpOnly = true,
                     Secure = true, 
                     SameSite = SameSiteMode.None 
@@ -46,13 +47,9 @@ namespace task_api.Controllers
 
                 return Ok(user);
             }
-            catch (ArgumentException ex)
+            catch (DublicateUserException ex)
             {
                 return BadRequest(ex.Message);
-            }
-            catch (DublicateUserException)
-            {
-                return BadRequest("User already exists");
             }
         }
         
@@ -60,7 +57,7 @@ namespace task_api.Controllers
         /// Login by data and get token
         /// </summary>
         /// <response code="200">Returns the logged account with jwt token</response>
-        /// <response code="500">If the account dont exists or an error has occurred</response>
+        /// <response code="404">If the account dont exists or an error has occurred</response>
         [HttpPost("/api/user/login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
         {
@@ -70,7 +67,7 @@ namespace task_api.Controllers
                 
                 _httpContextAccessor.HttpContext.Response.Cookies.Append("token", user.Token,  new CookieOptions
                 {
-                    MaxAge = TimeSpan.FromMinutes(60),
+                    MaxAge = TimeSpan.FromMinutes(20),
                     HttpOnly = true,
                     Secure = true, 
                     SameSite = SameSiteMode.None 
@@ -78,13 +75,9 @@ namespace task_api.Controllers
 
                 return Ok(user);
             }
-            catch (ArgumentException ex)
+            catch (NotFoundException ex)
             {
-                return BadRequest(ex.Message);
-            }
-            catch (SecurityTokenException)
-            {
-                return BadRequest("Invalid credentials");
+                return NotFound(ex.Message);
             }
         }
     }

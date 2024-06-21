@@ -30,7 +30,7 @@ public class TaskRecordService : BaseService, ITaskRecordService
         var taskExist = await _taskRecordRepository.GetTaskRecordByUserIdAndTaskIdAsync(request.UserId, request.TaskId);
         if (taskExist != null)
         {
-            throw new NotFoundException();
+            throw new ThrownException("Task record already exists.");
         }
 
         var taskRecord = _mapper.Map<TaskRecord>(request);
@@ -109,6 +109,10 @@ public class TaskRecordService : BaseService, ITaskRecordService
     public async Task<List<GetTaskRecordResponse>> GetAllAsync()
     {
         var taskRecords = await _taskRecordRepository.GetAllTaskRecordsAsync();
+        if (taskRecords is null)
+        {
+            throw new NotFoundException();
+        }
 
         var taskDTOs = _mapper.Map<List<GetTaskRecordResponse>>(taskRecords);
 

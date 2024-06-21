@@ -8,6 +8,7 @@ using task_api.TaskMetrics.API.Services.Interfaces;
 using task_api.TaskMetrics.Domain.Exceptions;
 using task_api.TaskMetrics.Domain.Interfaces;
 using task_api.TaskMetrics.Infrastructure.Repositories.TaskItem.Base;
+using Xunit.Sdk;
 using Task = task_api.Domain.Task;
 
 namespace task_api.TaskMetrics.API.Services;
@@ -28,7 +29,7 @@ public class TaskService : BaseService, ITaskService
         var taskExist = await _taskRepository.GetTaskByTitleAsync(request.Title);
         if (taskExist != null)
         {
-            throw new NotFoundException();
+            throw new ThrownException("Task already exists");
         }
 
         var task = _mapper.Map<Task>(request);
@@ -107,6 +108,11 @@ public class TaskService : BaseService, ITaskService
     public async Task<List<GetTaskResponse>> GetAllAsync()
     {
         var tasks = await _taskRepository.GetAllTasksAsync();
+
+        if (tasks is null)
+        {
+            throw new ThrownException("List is null");
+        }
         
         var taskDTOs = _mapper.Map<List<GetTaskResponse>>(tasks);
 
